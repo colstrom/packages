@@ -434,6 +434,7 @@ build=(
 
 typeset -C package package.{needs,requires,supports}
 typeset -a package.{files,depends.{host,packages}}
+typeset package.{name,version,origin}
 
 #######################
 # Derived Environment #
