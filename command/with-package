@@ -361,6 +361,7 @@ typeset -C system=(
     typeset -i bits
     typeset -i processors
     typeset -C is has
+    typeset -i is.{UNIX,Linux,SunOS,BSD,macOS,FreeBSD,OpenBSD,NetBSD}
 )
 
 (( system.processors )) || system.processors=$(${NPROC})
