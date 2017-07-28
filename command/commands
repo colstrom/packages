@@ -1,0 +1,102 @@
+#! /usr/bin/env ksh93
+# -*- shell-script -*-
+
+set -o errexit -o nounset
+
+PROGRAM_NAME=${0##*/}
+
+ROOT=${ROOT:-''}
+PACKAGES=${ROOT}/package
+COMMANDS=${ROOT}/command
+
+typeset -C error=(
+    ENOENT=(
+	status=2
+	message="No such file or directory"
+    )
+)
+
+if [[ ! -d ${PACKAGES} ]]
+then
+    print -r -u 2 -- "${PROGRAM_NAME}: ${PACKAGES}: ${error.ENOENT.message}"
+    exit ${error.ENOENT.status}
+fi
+
+function prune
+{
+    if [[ -d ${COMMANDS} ]]
+    then
+	find ${COMMANDS} -mindepth 1 -maxdepth 1 -type l \
+	    | while read -r command
+	do
+	    if [[ ! -x ${command} ]]
+	    then
+		print -r -u 2 -- "prune ${command} (missing)"
+		rm -f ${command}
+	    fi
+	done
+    fi
+}
+
+function update
+{
+    [[ -d ${COMMANDS} ]] \
+	|| mkdir -p ${COMMANDS}
+    
+    packages active | while read -r package
+    do
+	package commands ${package} | while read -r _ command
+	do
+	    basename=${command##*/}
+	    
+	    if [[ -e ${COMMANDS}/${basename} ]]
+	    then
+		if [[ -k ${COMMANDS}/${basename} ]]
+		then
+		    (( options.verbose )) && print -r -- "ignore ${package}/${command} (sticky)"
+		else
+		    if [[ $(readlink ${COMMANDS}/${basename}) == ${PACKAGES}/${package}/${command} ]]
+		    then
+			(( options.verbose )) && print -r -- "ignore ${package}/${command} (up-to-date)"
+		    else
+			(( options.quiet )) || print -r -- "update ${basename} -> ${package}/${command} (changed)"
+			ln -s -f ${PACKAGES}/${package}/${command} ${COMMANDS}
+		    fi
+		fi
+	    else
+		(( options.quiet )) || print -r -- "update ${basename} -> ${package}/${command} (new)"
+		ln -s -f ${PACKAGES}/${package}/${command} ${COMMANDS}
+	    fi
+	done
+    done
+}
+
+options=(
+    quiet=0
+    verbose=0
+)
+   
+while getopts '[-1c]
+[q:quiet]
+[v:verbose]
+
+action [... action]
+
+[+ACTIONS]{
+[+prune]
+[+update]
+}
+' OPTION
+do
+    case ${OPTION} in
+	q) options.quiet=1   ;;
+	v) options.verbose=1 ;;
+    esac
+done
+
+shift $(( OPTIND - 1 ))
+
+for argv
+do
+    eval "${argv}"
+done

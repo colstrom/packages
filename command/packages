@@ -1,0 +1,67 @@
+#! /usr/bin/env ksh93
+# -*- shell-script -*-
+
+set -o errexit -o nounset
+
+PROGRAM_NAME=${0##*/}
+
+ROOT=${ROOT:-''}
+PACKAGES=${ROOT}/package
+
+
+typeset -C error=(
+    ENOENT=(
+	status=2
+	message='No such file or directory'
+    )
+)
+
+
+
+
+
+if [[ ! -d ${PACKAGES} ]]
+then
+    print -r -u 2 -- "${PROGRAM_NAME}: ${PACKAGES}: ${error.ENOENT.message}"
+    exit ${error.ENOENT.status}
+fi
+    
+function installed
+{
+    find ${PACKAGES} -mindepth 1 -maxdepth 1 -type d \
+	| while read -r package
+    do
+	print -r -- ${package##*/.}
+    done \
+	| sort
+}
+
+function linked
+{
+    find ${PACKAGES} -mindepth 1 -maxdepth 1 -type l \
+	| while read -r package
+    do
+	print -r -- ${package##*/}
+    done \
+	| sort
+}
+
+function active
+{
+    comm -12 <(installed) <(linked)
+}
+
+function inactive
+{
+    comm -23 <(installed) <(linked)
+}
+
+function broken
+{
+    comm -13 <(installed) <(linked)
+}
+
+for argv
+do
+    eval "${argv}"
+done

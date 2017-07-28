@@ -1,0 +1,226 @@
+#! /usr/bin/env ksh93
+# -*- shell-script -*-
+
+set -o errexit -o nounset
+
+PROGRAM_NAME=${0##*/}
+
+: ${ROOT:=''}
+PACKAGES=${ROOT}/package
+COMMANDS=${ROOT}/command
+
+typeset -C error=(
+    ENOENT=(
+	status=2
+	message="No such file or directory"
+    )
+    EINVAL=(
+	status=22
+	message="Invalid argument"
+    )
+)
+
+if [[ ! -d ${PACKAGES} ]]
+then
+    print -r -u 2 -- "${PROGRAM_NAME}: ${PACKAGES}: ${error.ENOENT.message}"
+    exit ${error.ENOENT.status}
+fi
+
+if (( ! ${#} ))
+then
+    print -r -u 2 -- "usage: ${PROGRAM_NAME} <subcommand> [options] [arguments]"
+    exit ${error.EINVAL.status}
+fi
+
+function activate
+{
+    (( ${#} >= 2 )) || {
+        print -r -u 2 "usage: ${PROGRAM_NAME} activate <package> <version>"
+        return ${error.EINVAL.status}
+    }
+    
+    package=${1}
+    version=${2}
+
+    [[ -d ${PACKAGES}/.${package} ]] || {
+        print -r -u 2 -- "${0}: ${PACKAGES}/.${package}: No such file or directory"
+        exit ${ENOENT}
+    }
+
+    [[ -d ${PACKAGES}/.${package}/${version} ]] || {
+        print -r -u 2 -- "${0}: ${PACKAGES}/.${package}/${version}: No such file or directory"
+        exit ${ENOENT}
+    }
+
+    if [[ ! -e ${PACKAGES}/${package} ]]
+    then
+        ln -s .${package}/${version} ${PACKAGES}/${package}
+        print -r -- "${package} -> ${version}"
+    else
+        WORKDIR=$(mktemp -d)
+
+        ln -s .${package}/${version} ${WORKDIR}/${package}
+
+        tar -c -f - -C ${WORKDIR} ${package} \
+            | tar -x -f - -C ${PACKAGES}
+
+        print -r -- "${package} -> ${version}"
+
+        rm -rf ${WORKDIR}
+    fi
+    
+}
+
+function longest
+{
+    typeset -i longest=0
+    
+    for argv
+    do
+	(( ${#argv} > ${longest} )) \
+	    && longest=${#argv}
+    done
+
+    print -r "${longest}"
+}
+
+function versions
+{
+    typeset -a packages
+    for package in ${@:-$(packages active)}
+    do
+	packages+=(${package})
+    done
+    
+    longest=$(longest "${packages[@]}")
+    
+    for package in ${packages[@]}
+    do
+	find ${PACKAGES}/.${package} -mindepth 1 -maxdepth 1 -type d | while read -r version
+	do
+	    typeset -L${longest} name
+	    name=${package}
+	    print -r -- "${name}  ${version##*/}"
+	done \
+	    | sort -n -k 2
+    done
+}
+
+function latest
+{
+    for package
+    do
+	versions ${package} \
+	    | tail -n 1
+    done
+}
+
+function contents
+{
+    (( ${#} )) \
+	|| return ${error.EINVAL.status}
+
+    package=${1}
+    shift 1
+
+    [[ -d ${PACKAGES}/${package} ]] \
+	|| return
+
+    for dir
+    do
+	[[ -d ${PACKAGES}/${package}/${dir} ]] \
+	    || continue
+
+	find ${PACKAGES}/${package}/${dir} -mindepth 1 | while read -r object
+	do
+	    print -r -- ${object#${PACKAGES}/${package}/}
+	done
+    done
+}
+
+function commands
+{
+    typeset -a search
+    typeset -C options=(
+	absolute=0
+	bin=1
+	command=1
+	libexec=0
+	names=1
+	sbin=1
+    )
+
+    while getopts '[-1c+]
+[+DESCRIPTION?Writes a list of commands provided by PACKAGE to the
+standard output. Options control which commands are listed. Passing an
+option with a (-) prefix excludes those commands, while a (+) prefix
+includes those commands. Long-form arguments use (--) or (++). In the
+event of conflicting options, the last one is used.]
+[A:absolute ?(-) use absolute paths]
+[N:names    ?(+) include package names]
+[c:command  ?(+) search in ${PACKAGE}/command]
+[b:bin      ?(+) search in ${PACKAGE}/bin]
+[s:sbin     ?(+) search in ${PACKAGE}/sbin]
+[l:libexec  ?(-) search in ${PACKAGE}/libexec]
+
+PACKAGE [PACKAGE ...]
+
+' OPTION
+    do
+	case ${OPTION} in
+	    +A)  options.absolute=1 ;;
+	    A)   options.absolute=0 ;;
+	    +N)  options.names=1    ;;
+	    N)   options.names=0    ;;
+	    +b)  options.bin=1      ;;
+	    b)   options.bin=0      ;;
+	    +c)  options.command=1  ;;
+	    c)   options.command=0  ;;
+	    +l)  options.libexec=1  ;;
+	    l)   options.libexec=0  ;;
+	    +s)  options.sbin=1     ;;
+	    s)   options.sbin=0     ;;
+	esac
+    done
+    
+    shift $(( OPTIND - 1 ))
+
+    (( options.bin )) \
+	&& search+=(bin)
+    (( options.sbin )) \
+	&& search+=(sbin)
+    (( options.libexec )) \
+	&& search+=(libexec)
+    (( options.command )) \
+	&& search+=(command)
+    (( options.names )) \
+	&& longest=$(longest "${@}")
+
+    for package
+    do
+	(( options.names )) \
+	    && typeset -L${longest} name=${package}
+	
+	contents ${package} "${search[@]}" | while read -r command
+	do
+	    [[ -f ${PACKAGES}/${package}/${command} ]] \
+		|| [[ -L ${PACKAGES}/${package}/${command} ]] \
+		|| continue
+	    
+	    [[ -x ${PACKAGES}/${package}/${command} ]] \
+		|| continue
+
+	    (( options.names )) \
+		&& print -r -n -- "${name}  "
+	    
+	    if (( options.absolute ))
+	    then
+		print -r -- "${PACKAGES}/${package}/${command}"
+	    else
+		print -r -- "${command}"
+	    fi
+	done
+    done
+}
+	
+eval ${@:-}
