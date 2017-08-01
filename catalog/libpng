@@ -1,0 +1,11 @@
+
+# -*- shell-script -*-
+
+package=(
+    name=libpng
+    version=1.6.30
+    origin=https://sourceforge.net/projects/libpng/files/libpng16/${_.version}
+    files=(
+        libpng-${_.version}.tar.xz
+    )
+)
