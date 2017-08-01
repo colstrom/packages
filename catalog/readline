@@ -1,0 +1,19 @@
+
+# -*- shell-script -*-
+
+package=(
+    name=readline
+    version=7.0
+    origin=https://ftp.gnu.org/gnu/readline
+    files=(
+        readline-${_.version}.tar.gz
+    )
+)
+
+configure=(
+    options=(
+        --enable-multibyte
+        --enable-shared
+        --enable-static
+    )
+)
