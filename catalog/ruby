@@ -1,0 +1,13 @@
+
+# -*- shell-script -*-
+
+package=(
+    name=ruby
+    version=2.4.1
+    origin=https://cache.ruby-lang.org/pub/ruby/${_.version%.*}
+    files=(
+        ruby-${_.version}.tar.gz
+    )
+)
+
+(( system.has.dtrace )) && configure.options+= ( --enable-dtrace )
