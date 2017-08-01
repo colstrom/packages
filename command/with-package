@@ -70,12 +70,6 @@ then
 fi
 
 
-if [[ ! -f ${1} ]]
-then
-    print -r -u 2 -- "${PROGRAM_NAME}: ${1}: No such file or directory"
-    exit ${ENOENT}
-fi
-
 ####################
 # Base Environment #
 ####################
@@ -90,6 +84,11 @@ fi
 #############
 # Functions #
 #############
+
+function workdir
+{
+    print -r "${WORKDIR}"
+}
 
 function clean
 {
@@ -217,6 +216,10 @@ function configure
 	then
 	    ./autogen.sh
 	    ${.sh.fun}
+        elif [[ -f configure.ac ]]
+        then
+            ${AUTORECONF_I}
+            ${.sh.fun}
 	fi
     fi
 }
@@ -278,13 +281,13 @@ function needs
     do
 	if [[ -f ${CATALOG}/${need} ]]
 	then
-	    unpkg ${CATALOG}/${need} needs
+	    with-package ${CATALOG}/${need} needs
         fi
 	print -r -- "${need} ${package.name}"
     done
 }
 
-function configure_help
+function configure__help
 {
     set ${GLOBAL_OPTIONS}
     
@@ -312,6 +315,7 @@ function show
 ##########
 
 : ${AR:=$(whence -p ar)}
+: ${AUTORECONF:=$(whence -p autoreconf)}
 : ${BISON:=$(whence -p bison)}
 : ${BUNZIP2:=$(whence -p bunzip2)}
 : ${CCACHE:=$(whence -p ccache)}
@@ -350,6 +354,7 @@ function show
 : ${CC:=${GCC}}
 : ${CXX:=${GXX}}
 
+: ${AUTORECONF_I:="${AUTORECONF} -i"}
 : ${LN_S:="${LN} -s"}
 : ${MKDIR_P:="${MKDIR} -p"}
 : ${RM_RF:="${RM} -rf"}
@@ -361,7 +366,6 @@ typeset -C system=(
     typeset -i bits
     typeset -i processors
     typeset -C is has
-    typeset -i is.{UNIX,Linux,SunOS,BSD,macOS,FreeBSD,OpenBSD,NetBSD}
 )
 
 (( system.processors )) || system.processors=$(${NPROC})
@@ -430,11 +434,25 @@ build=(
 # Package Specification #
 #########################
 
-. ${1}
+if [[ ${1} =~ / ]]
+then
+    if [[ ! -f ${1} ]]
+    then
+        print -r -u 2 -- "${PROGRAM_NAME}: ${1}: No such file or directory"
+        exit ${ENOENT}
+    fi
+    . ${1}
+else
+    if [[ ! -f ${ROOT}/.package/catalog/${1} ]]
+    then
+        print -r -u 2 -- "${PROGRAM_NAME}: ${1}: No such file or directory"
+        exit ${ENOENT}
+    fi
+    . ${ROOT}/.package/catalog/${1}
+fi
 
 typeset -C package package.{needs,requires,supports}
 typeset -a package.{files,depends.{host,packages}}
-typeset package.{name,version,origin}
 
 #######################
 # Derived Environment #
