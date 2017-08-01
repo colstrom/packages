@@ -1,0 +1,11 @@
+
+# -*- shell-script -*-
+
+package=(
+    name=ragel
+    version=6.10
+    origin=https://www.colm.net/files/ragel
+    files=(
+        ragel-${_.version}.tar.gz
+    )
+)
