@@ -1,0 +1,26 @@
+
+# -*- shell-script -*-
+
+package=(
+    name=gdbm
+    version=1.13
+    origin=https://ftp.gnu.org/gnu/gdbm
+    files=(
+        gdbm-${_.version}.tar.gz
+    )
+    needs=(
+        packages=(
+            libiconv
+        )
+    )
+)
+
+configure=(
+    options=(
+        --enable-memory-mapped-io
+        --enable-shared
+        --enable-static
+        --with-pic
+        --with-libiconv-prefix=/package/libiconv
+    )
+)
