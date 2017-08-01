@@ -1,0 +1,11 @@
+
+# -*- shell-script -*-
+
+package=(
+    name=tcsh
+    version=6.20.00
+    origin=ftp://ftp.astron.com/pub/tcsh
+    files=(
+        tcsh-${_.version}.tar.gz
+    )
+)
