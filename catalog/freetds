@@ -1,0 +1,11 @@
+
+# -*- shell-script -*-
+
+package=(
+    name=freetds
+    version=1.00.48
+    origin=ftp://ftp.freetds.org/pub/freetds/stable
+    files=(
+        freetds-${_.version}.tar.bz2
+    )
+)
