@@ -1,0 +1,9 @@
+@@ -113,7 +113,7 @@ devel :
+ 
+ 
+ stable :
+-	make MYLIBS="$(MYLIBS)" CFLAGS="-Wall -ansi -pedantic -fPIC -fsigned-char -O2" all
++	make MYLIBS="$(MYLIBS)" CFLAGS="-Wall -ansi -pedantic -fPIC -fsigned-char -Os -m64" all
+ 
+ 
+ profile :
