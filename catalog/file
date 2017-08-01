@@ -1,0 +1,11 @@
+
+# -*- shell-script -*-
+
+package=(
+    name=file
+    version=5.31
+    origin=ftp://ftp.astron.com/pub/file
+    files=(
+        file-${_.version}.tar.gz
+    )
+)
