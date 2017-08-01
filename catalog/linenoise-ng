@@ -1,0 +1,16 @@
+
+# -*- shell-script -*-
+
+package=(
+    name=linenoise-ng
+    version=1.0.1
+    origin=https://github.com/arangodb/linenoise-ng/archive
+    files=(
+        v${_.version}.tar.gz
+    )
+    package=(
+        supports=(
+            cmake=1
+        )
+    )
+)
