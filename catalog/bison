@@ -1,0 +1,25 @@
+
+# -*- shell-script -*-
+
+package=(
+    name=bison
+    version=3.0.4
+    origin=https://ftp.gnu.org/gnu/bison
+    files=(
+        bison-${_.version}.tar.xz
+    )
+    needs=(
+        packages=(
+            libiconv
+            pth
+        )
+    )
+)
+
+configure=(
+    options=(
+        --enable-threads=posix
+        --with-libiconv-prefix=/package/libiconv
+        --with-libpth-prefix=/package/pth
+    )
+)
