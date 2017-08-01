@@ -1,0 +1,26 @@
+
+# -*- shell-script -*-
+
+package=(
+    name=jq
+    version=1.5
+    origin=https://github.com/stedolan/jq/archive
+    files=(
+        jq-${_.version}.tar.gz
+    )
+)
+
+build=(
+    CFLAGS=(
+        -std=c99
+        -D_XPG6
+        -D__EXTENSIONS__
+    )
+    dir=jq-jq-${package.version}
+)
+
+configure=(
+    options=(
+        --enable-pthread-tls
+    )
+)
