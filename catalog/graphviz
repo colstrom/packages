@@ -1,0 +1,65 @@
+
+# -*- shell-script -*-
+
+package=(
+    name=graphviz
+    version=2.40.1
+    origin=http://www.graphviz.org/pub/graphviz/stable/SOURCES
+    files=(
+        graphviz-${_.version}.tar.gz
+    )
+)
+
+configure=(
+    options=(
+        --enable-go=no
+        --enable-guile=no
+        --enable-io=no
+        --enable-java=no
+        --enable-ltdl-install=no
+        --enable-ltdl=no
+        --enable-lua=no
+        --enable-ocaml=no
+        --enable-perl=no
+        --enable-php=no
+        --enable-python=no
+        --enable-r=no
+        --enable-ruby=no
+        --enable-shared
+        --enable-sharp=no
+        --enable-static
+        --enable-tcl=no
+        --with-ann=no
+        --with-devil=no
+        --with-digcola=yes
+        --with-expat=no
+        --with-fontconfig=no
+        --with-freetype2=no
+        --with-gdiplus=no
+        --with-gdk-pixbuf=no
+        --with-gdk=no
+        --with-ghostscript=no
+        --with-glade=no
+        --with-glitz=no
+        --with-glut=no
+        --with-gtk=no
+        --with-gtkgl=no
+        --with-gtkgtlext=no
+        --with-gts=no
+        --with-ipsepcola=no
+        --with-lasi=no
+        --with-libgd=no
+        --with-ming=no
+        --with-ortho=yes
+        --with-pangocairo=no
+        --with-poppler=no
+        --with-qt=no
+        --with-quartz=no
+        --with-rsvg=no
+        --with-sfdp=yes
+        --with-smyrna=no
+        --with-visio=no
+        --with-webp=no
+        --with-x=no
+    )
+)
