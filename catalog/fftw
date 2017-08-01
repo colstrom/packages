@@ -1,0 +1,11 @@
+
+# -*- shell-script -*-
+
+package=(
+    name=fftw
+    version=3.3.6-pl2
+    origin=http://www.fftw.org
+    files=(
+        fftw-${_.version}.tar.gz
+    )
+)
