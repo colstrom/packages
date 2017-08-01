@@ -1,0 +1,9 @@
+@@ -16,7 +16,7 @@ interpolation.c : generate_sigma
+ network.o : interpolation.c
+ 
+ generate_sigma : generate_sigma.o
+-	$(CC) -o $@ $^ -lm
++	$(CC) $(LDFLAGS) -o $@ $^ -lm
+ 
+ depend :
+ 	makedepend *.c
