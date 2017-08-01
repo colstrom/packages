@@ -1,0 +1,19 @@
+
+# -*- shell-script -*-
+
+package=(
+    name=expat
+    version=2.2.2
+    origin=https://sourceforge.net/projects/expat/files/expat/${_.version}
+    files=(
+        expat-${_.version}.tar.bz2
+    )
+)
+
+configure=(
+    options=(
+        --enable-shared
+        --enable-static
+        --with-pic
+    )
+)
