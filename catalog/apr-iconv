@@ -1,0 +1,22 @@
+
+# -*- shell-script -*-
+
+package=(
+    name=apr-iconv
+    version=1.2.1
+    origin=http://mirror.its.dal.ca/apache/apr
+    files=(
+        apr-iconv-${_.version}.tar.bz2
+    )
+    needs=(
+        packages=(
+            apr
+        )
+    )
+)
+
+configure=(
+    options=(
+        --with-apr=/package/apr
+    )
+)
