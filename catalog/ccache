@@ -1,0 +1,11 @@
+
+# -*- shell-script -*-
+
+package=(
+    name=ccache
+    version=3.3.4
+    origin=https://www.samba.org/ftp/ccache
+    files=(
+        ccache-${_.version}.tar.xz
+    )
+)
