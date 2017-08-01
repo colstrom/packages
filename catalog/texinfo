@@ -1,0 +1,25 @@
+
+# -*- shell-script -*-
+
+package=(
+    name=texinfo
+    version=6.4
+    origin=https://ftp.gnu.org/gnu/texinfo
+    files=(
+        texinfo-${_.version}.tar.xz
+    )
+    needs=(
+        packages=(
+            libiconv
+            pth
+        )
+    )
+)
+
+configure=(
+    options=(
+        --enable-threads=posix
+        --with-libiconv-prefix=/package/libiconv
+        --with-libpth-prefix=/package/pth
+    )
+)
