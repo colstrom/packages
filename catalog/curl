@@ -1,0 +1,60 @@
+
+# -*- shell-script -*-
+
+package=(
+    name=curl
+    version=7.54.1
+    origin=https://curl.haxx.se/download
+    files=(
+        curl-${_.version}.tar.gz
+    )
+)
+
+configure=(
+    options=(
+        --enable-cookies
+        --enable-crypto-auth
+        --enable-dict
+        --enable-file
+        --enable-ftp
+        --enable-gopher
+        --enable-http
+        --enable-imap
+        --enable-ipv6
+        --enable-ldap
+        --enable-ldaps
+        --enable-libcurl-option
+        --enable-manual
+        --enable-pop3
+        --enable-proxy
+        --enable-pthreads
+        --enable-rtsp
+        --enable-smb
+        --enable-smtp
+        --enable-soname-bump
+        --enable-sspi
+        --enable-telnet
+        --enable-tftp
+        --enable-threaded-resolver
+        --enable-tls-srp
+        --enable-unix-sockets
+        --enable-verbose
+        --enable-versioned-symbols
+        --with-ca-fallback
+        --without-axtls
+        --without-cyassl
+        --without-darwinssl
+        --without-gnutls
+        --without-libidn2
+        --without-libmetalink
+        --without-librtmp
+        --without-libssh2
+        --without-mbedtls
+        --without-nghttp2
+        --without-nss
+        --without-polarssl
+        --without-winidn
+        --without-winssl
+        --without-zsh-functions-dir
+    )
+)
