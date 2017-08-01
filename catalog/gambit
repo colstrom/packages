@@ -1,0 +1,15 @@
+
+# -*- shell-script -*-
+
+package=(
+    name=gambit
+    version=4.8.8
+    origin=http://www.iro.umontreal.ca/~gambit/download/gambit/v${_.version%.*}/source
+    files=(
+        gambit-v${_.version//./_}-devel.tgz
+    )
+)
+
+build=(
+    dir=gambit-v${package.version//./_}-devel
+)
