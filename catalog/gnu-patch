@@ -1,0 +1,21 @@
+
+# -*- shell-script -*-
+
+package=(
+    name=gnu-patch
+    version=2.7.5
+    origin=https://ftp.gnu.org/gnu/patch
+    files=(
+        patch-${_.version}.tar.xz
+    )
+)
+
+configure=(
+    options=(
+        --program-prefix=g
+    )
+)
+
+build=(
+    dir=patch-${package.version}
+)
