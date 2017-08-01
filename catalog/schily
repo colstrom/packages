@@ -1,0 +1,40 @@
+
+# -*- shell-script -*-
+
+package=(
+    name=schilytools
+    version=2017-06-29
+    origin=https://sourceforge.net/projects/schilytools/files
+    files=(
+        schily-${_.version}.tar.bz2
+    )
+)
+
+function configure
+{
+    :
+}
+
+function build
+{
+    [[ -d ${WORKDIR} ]] || prepare
+
+    cd ${WORKDIR}
+
+    env \
+        INS_BASE=${PACKAGE} \
+        CCOM=gcc64 \
+        make -e
+}
+
+function install
+{
+    build
+
+    cd ${WORKDIR}
+
+    env \
+        INS_BASE=${PACKAGE} \
+        CCOM=gcc64 \
+        make -e install
+}
