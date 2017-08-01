@@ -1,0 +1,26 @@
+
+# -*- shell-script -*-
+
+package=(
+    name=mpc
+    version=1.0.3
+    origin=https://ftp.gnu.org/gnu/mpc
+    files=(
+        mpc-${_.version}.tar.gz
+    )
+    needs=(
+        packages=(
+            gmp
+            mpfr
+        )
+    )
+)
+
+build=(
+    CPPFLAGS=(
+        -I/package/gmp/include
+    )
+    LDFLAGS=(
+        -L/package/mpfr/lib
+    )
+)
