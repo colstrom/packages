@@ -1,0 +1,55 @@
+
+# -*- shell-script -*-
+
+package=(
+    name=s6-dns
+    version=2.2.0.0
+    origin=https://skarnet.org/software/s6-dns
+    files=(
+        s6-dns-${_.version}.tar.gz
+    )
+    needs=(
+        packages=(
+            skalibs
+        )
+    )
+    requires=(
+        make_arguments=1
+    )
+)
+
+configure=(
+    options=(
+        --enable-absolute-paths
+        --with-dynlib=/package/skalibs/lib
+        --with-include=/package/skalibs/include
+        --with-lib=/package/skalibs/lib/skalibs
+        --with-sysdeps=/package/skalibs/lib/skalibs/sysdeps
+    )
+)
+
+export PATH=/usr/xpg4/bin:${PATH}
+
+make.arguments+=(
+    "CFLAGS_ALL=${build.CFLAGS[*]}"
+)
+
+function __skarnet_patch
+{
+    set ${GLOBAL_OPTIONS}
+
+    [[ -d ${WORKDIR} ]] || unpack
+
+    cd ${WORKDIR}
+
+    if [[ -x patch-for-solaris ]] && [[ $(uname -s) == SunOS ]]
+    then
+        ./patch-for-solaris
+    fi
+}
+
+function patch
+{
+    __skarnet_patch
+    __default_patch
+}
