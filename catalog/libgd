@@ -1,0 +1,11 @@
+
+# -*- shell-script -*-
+
+package=(
+    name=libgd
+    version=2.2.4
+    origin=https://github.com/libgd/libgd/releases/download/gd-${_.version}
+    files=(
+        libgd-${_.version}.tar.xz
+    )
+)
