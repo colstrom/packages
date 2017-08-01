@@ -1,0 +1,11 @@
+
+# -*- shell-script -*-
+
+package=(
+    name=byacc
+    version=20170709
+    origin=http://invisible-island.net/datafiles/release
+    files=(
+        byacc-${_.version}.tgz
+    )
+)
