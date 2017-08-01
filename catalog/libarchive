@@ -1,0 +1,29 @@
+
+# -*- shell-script -*-
+
+package=(
+    name=libarchive
+    version=3.3.2
+    origin=http://www.libarchive.org/downloads
+    files=(
+        libarchive-${_.version}.tar.gz
+    )
+    needs=(
+        packages=(
+            libiconv
+        )
+    )
+)
+
+configure=(
+    options=(
+        --enable-bsdcat
+        --enable-bsdcpio
+        --enable-bsdtar
+        --enable-posix-regex-lib=libpcreposix
+        --enable-shared
+        --enable-static
+        --with-libiconv-prefix=/package/libiconv
+        --with-pic
+    )
+)
