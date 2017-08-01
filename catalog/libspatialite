@@ -1,0 +1,42 @@
+
+# -*- shell-script -*-
+
+package=(
+    name=libspatialite
+    version=4.3.0a
+    origin=http://www.gaia-gis.it/gaia-sins
+    files=(
+        libspatialite-${_.version}.tar.gz
+    )
+    needs=(
+        packages=(
+            freexl
+            geos
+            libxml2
+            proj
+        )
+    )
+)
+
+build=(
+    CPPFLAGS=(
+        -I/package/proj/include
+        -I/package/freexl/include
+        -I/package/geos/include
+        -I/package/libxml2/include/libxml2
+    )
+    LDFLAGS=(
+        -L/package/proj/lib
+        -L/package/freexl/lib
+        -L/package/geos/lib
+        -L/package/libxml2/lib
+    )
+)
+
+configure=(
+    arguments=(
+        "LIBXML2_CFLAGS=-I/package/libxml2/include/libxml2"
+        "LIBXML2_LIBS=-L/package/libxml2/lib"
+        "LIBS=-lxml2"
+    )
+)
