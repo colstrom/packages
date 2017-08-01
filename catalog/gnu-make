@@ -1,0 +1,27 @@
+
+# -*- shell-script -*-
+
+package=(
+    name=gnu-make
+    version=4.2.1
+    origin=https://ftp.gnu.org/gnu/make
+    files=(
+        make-${_.version}.tar.bz2
+    )
+    needs=(
+        packages=(
+            libiconv
+        )
+    )
+)
+
+configure=(
+    options=(
+        --program-prefix=g
+        --with-libiconv-prefix=/package/libiconv
+    )
+)
+
+build=(
+    dir=make-${package.version}
+)
