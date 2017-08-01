@@ -1,0 +1,11 @@
+
+# -*- shell-script -*-
+
+package=(
+    name=cdk
+    version=5.0-20161210
+    origin=http://invisible-island.net/datafiles/release
+    files=(
+        cdk-${_.version}.tgz
+    )
+)
