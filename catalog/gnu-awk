@@ -1,0 +1,17 @@
+# -*- shell-script -*-
+
+package=(
+    name=gawk
+    version=4.1.4
+    origin=https://ftp.gnu.org/gnu/gawk
+    files=(
+        gawk-${_.version}.tar.xz
+    )
+)
+
+build=(
+    CPPFLAGS=(
+        -D_XOPEN_SOURCE=600
+        -D_XPG6
+    )
+)
