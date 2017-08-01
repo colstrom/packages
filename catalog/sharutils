@@ -1,0 +1,25 @@
+
+# -*- shell-script -*-
+
+package=(
+    name=sharutils
+    version=4.15.2
+    origin=https://ftp.gnu.org/gnu/sharutils
+    files=(
+        sharutils-${_.version}.tar.xz
+    )
+    needs=(
+        packages=(
+            libiconv
+            pth
+        )
+    )
+)
+
+configure=(
+    options=(
+        --enable-threads=posix
+        --with-libiconv-prefix=/package/libiconv
+        --with-libpth-prefix=/package/pth
+    )
+)
