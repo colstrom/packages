@@ -1,0 +1,11 @@
+
+# -*- shell-script -*-
+
+package=(
+    name=pixman
+    version=0.34.0
+    origin=https://www.cairographics.org/releases
+    files=(
+        pixman-${_.version}.tar.gz
+    )
+)
