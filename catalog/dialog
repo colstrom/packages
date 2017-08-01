@@ -1,0 +1,11 @@
+
+# -*- shell-script -*-
+
+package=(
+    name=dialog
+    version=1.3-20170509
+    origin=http://invisible-island.net/datafiles/release
+    files=(
+        dialog-${_.version}.tgz
+    )
+)
