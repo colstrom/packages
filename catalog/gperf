@@ -1,0 +1,11 @@
+
+# -*- shell-script -*-
+
+package=(
+    name=gperf
+    version=3.1
+    origin=https://ftp.gnu.org/gnu/gperf
+    files=(
+        gperf-${_.version}.tar.gz
+    )
+)
