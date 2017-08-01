@@ -1,0 +1,20 @@
+
+# -*- shell-script -*-
+
+package=(
+    name=qdbm
+    version=1.8.78
+    origin=http://fallabs.com/qdbm
+    files=(
+        qdbm-${_.version}.tar.gz
+    )
+)
+
+configure=(
+    options=(
+        --enable-iconv
+        --enable-pthread
+        --enable-stable
+        --enable-zlib
+    )
+)
