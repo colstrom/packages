@@ -1,0 +1,11 @@
+
+# -*- shell-script -*-
+
+package=(
+    name=parallel
+    version=20170722
+    origin=https://ftp.gnu.org/gnu/parallel
+    files=(
+        parallel-${_.version}.tar.bz2
+    )
+)
