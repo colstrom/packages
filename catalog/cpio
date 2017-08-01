@@ -1,0 +1,23 @@
+
+# -*- shell-script -*-
+
+package=(
+    name=cpio
+    version=2.12
+    origin=https://ftp.gnu.org/gnu/cpio
+    files=(
+        cpio-${_.version}.tar.bz2
+    )
+    needs=(
+        packages=(
+            libiconv
+        )
+    )
+)
+
+configure=(
+    options=(
+        --enable-mt
+        --with-libiconv-prefix=/package/libiconv
+    )
+)
