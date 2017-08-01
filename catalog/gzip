@@ -1,0 +1,23 @@
+
+# -*- shell-script -*-
+
+package=(
+    name=gzip
+    version=1.8
+    origin=https://ftp.gnu.org/gnu/gzip
+    files=(
+        gzip-${_.version}.tar.xz
+    )
+    needs=(
+        packages=(
+            pth
+        )
+    )
+)
+
+configure=(
+    options=(
+        --enable-threads=posix
+        --with-libpth-prefix=/package/pth
+    )
+)
