@@ -1,0 +1,40 @@
+
+# -*- shell-script -*-
+
+package=(
+    name=nawk
+    version=20121220
+    origin=https://www.cs.princeton.edu/~bwk/btl.mirror
+    files=(
+        awk.tar.gz
+    )
+    requires=(
+        make_arguments=1
+    )
+)
+
+build=(
+    dir=.
+)
+
+make=(
+    arguments=(
+        "YACC=${BISON}"
+        "YFLAGS=-d -y"
+    )
+)
+
+function install
+{
+    build
+    cd ${WORKDIR}
+
+    cp a.out nawk
+
+    ${INSTALL} -d ${PACKAGE}/bin
+    ${INSTALL} -c ${PACKAGE}/bin -m 0755 awk
+    ${LN_S} nawk ${PACKAGE}/bin/awk
+    
+    ${INSTALL} -d ${PACKAGE}/share/man/man1
+    ${INSTALL} -c ${PACKAGE}/share/man/man1 awk.1
+}
