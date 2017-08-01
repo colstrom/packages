@@ -1,0 +1,15 @@
+
+# -*- shell-script -*-
+
+package=(
+    name=hashdeep
+    version=4.4
+    origin=https://github.com/jessek/hashdeep/archive
+    files=(
+        release-${_.version}.tar.gz
+    )
+)
+
+build=(
+    dir=hashdeep-release-${package.version}
+)
