@@ -1,0 +1,11 @@
+
+# -*- shell-script -*-
+
+package=(
+    name=jpeg
+    version=9b
+    origin=http://ijg.org/files
+    files=(
+        jpegsrc.v${_.version}.tar.gz
+    )
+)
