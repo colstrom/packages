@@ -1,0 +1,9 @@
+@@ -61313,7 +61313,7 @@ if test "x$ac_cv_func_inotify_init" = xyes; then :
+ #define HAVE_INOTIFY_INIT 1
+ _ACEOF
+ 
+-$as_echo "#define HAVE_INOTIFY 1" >>confdefs.h
++$as_echo "#define HAVE_INOTIFY 0" >>confdefs.h
+ 
+ fi
+ done
