@@ -1,0 +1,29 @@
+
+# -*- shell-script -*-
+
+package=(
+    name=coreutils
+    version=8.27
+    origin=https://ftp.gnu.org/gnu/coreutils
+    files=(
+        coreutils-${_.version}.tar.xz
+    )
+    needs=(
+        packages=(
+            libiconv
+            pth
+        )
+    )
+)
+
+configure=(
+    options=(
+        --enable-single-binary=shebangs
+        --enable-threads=posix
+        --program-prefix=g
+        --with-libiconv-prefix=/package/libiconv
+        --with-libpth-prefix=/package/libpth
+    )
+)
+
+[[ ${USER} == root ]] && export FORCE_UNSAFE_CONFIGURE=1
