@@ -1,0 +1,11 @@
+
+# -*- shell-script -*-
+
+package=(
+    name=colm
+    version=0.12.0
+    origin=https://www.colm.net/files/colm
+    files=(
+        colm-${_.version}.tar.gz
+    )
+)
