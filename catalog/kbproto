@@ -1,0 +1,11 @@
+
+# -*- shell-script -*-
+
+package=(
+    name=kbproto
+    version=1.0.5
+    origin=https://www.x.org/releases/X11R7.6/src/proto
+    files=(
+        kbproto-${_.version}.tar.bz2
+    )
+)
