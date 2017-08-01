@@ -1,0 +1,11 @@
+
+# -*- shell-script -*-
+
+package=(
+    name=lzo
+    version=2.10
+    origin=http://www.oberhumer.com/opensource/lzo/download
+    files=(
+        lzo-${_.version}.tar.gz
+    )
+)
