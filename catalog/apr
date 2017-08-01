@@ -1,0 +1,22 @@
+
+# -*- shell-script -*-
+
+package=(
+    name=apr
+    version=1.6.2
+    origin=http://mirror.its.dal.ca/apache/apr
+    files=(
+        apr-${_.version}.tar.bz2
+    )
+)
+
+configure=(
+    options=(
+        --enable-allocator-guard-pages
+        --enable-allocator-uses-mmap
+        --enable-other-child
+        --enable-pool-concurrency-check
+        --enable-posix-shm
+        --enable-threads
+    )
+)
