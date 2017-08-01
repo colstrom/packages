@@ -1,0 +1,9 @@
+@@ -2762,7 +2762,7 @@ then
+   fi
+   if uname | egrep -i 'SunOS' > /dev/null 2>&1
+   then
+-    MYCFLAGS="-Wall -fPIC -fsigned-char -O1"
++    MYCFLAGS="-Wall -fPIC -fsigned-char -Os -m64"
+   fi
+   if uname | egrep -i 'BSD' > /dev/null 2>&1
+   then
