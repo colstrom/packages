@@ -1,0 +1,15 @@
+
+# -*- shell-script -*-
+
+package=(
+    name=sqlite
+    version=3.19.3
+    origin=https://sqlite.org/2017
+    files=(
+        sqlite-autoconf-3190300.tar.gz
+    )
+)
+
+build=(
+    dir=sqlite-autoconf-3190300
+)
