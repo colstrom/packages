@@ -1,0 +1,11 @@
+
+# -*- shell-script -*-
+
+package=(
+    name=binutils
+    version=2.27
+    origin=https://ftp.gnu.org/gnu/binutils
+    files=(
+        binutils-${_.version}.tar.gz
+    )
+)
