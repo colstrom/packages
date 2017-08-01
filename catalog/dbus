@@ -1,0 +1,17 @@
+
+# -*- shell-script -*-
+
+package=(
+    name=dbus
+    version=1.10.20
+    origin=https://dbus.freedesktop.org/releases/dbus
+    files=(
+        dbus-${_.version}.tar.gz
+    )
+)
+
+build=(
+    CPPFLAGS=(
+        -D_XPG6
+    )
+)
