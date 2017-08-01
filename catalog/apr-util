@@ -1,0 +1,23 @@
+
+# -*- shell-script -*-
+
+package=(
+    name=apr-util
+    version=1.6.0
+    origin=http://mirror.its.dal.ca/apache/apr
+    files=(
+        apr-util-${_.version}.tar.bz2
+    )
+    needs=(
+        packages=(
+            apr
+        )
+    )
+)
+
+configure=(
+    options=(
+        --with-apr=/package/apr
+        --with-crypto
+    )
+)
