@@ -1,0 +1,18 @@
+@@ -2,7 +2,7 @@ CC = gcc
+ AS = as
+ 
+ CXXFLAGS = -Wall -pipe
+-CFLAGS = $(CXXFLAGS) -c
++CFLAGS = $(CXXFLAGS)
+ LFLAGS = $(CXXFLAGS)
+ ASFLAGS =
+ PEDANTIC_FLAGS = -ansi -pedantic -pedantic-errors
+@@ -49,7 +49,7 @@ tinyvm-asm: $(AS_OBJECTS)
+ asm:	$(AS_SOURCES)
+ 
+ %.o: %.c
+-	$(CC) $(CFLAGS) $< -o $@
++	$(CC) $(CFLAGS) -c $< -o $@
+ 
+ %.asm.o: %.asm
+ 	$(AS) $(ASFLAGS) $< -o $@

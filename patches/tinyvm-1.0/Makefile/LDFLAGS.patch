@@ -1,0 +1,23 @@
+@@ -3,7 +3,7 @@ AS = as
+ 
+ CXXFLAGS = -Wall -pipe
+ CFLAGS = $(CXXFLAGS)
+-LFLAGS = $(CXXFLAGS)
++LDFLAGS = $(CXXFLAGS)
+ ASFLAGS =
+ PEDANTIC_FLAGS = -ansi -pedantic -pedantic-errors
+ 
+@@ -39,11 +39,11 @@ all: tinyvm
+ 
+ # Build TVM from the C sources
+ tinyvm: $(OBJECTS)
+-	$(CC) $(LFLAGS) $(OBJECTS) -o $(BIN_NAME)
++	$(CC) $(LDFLAGS) $(OBJECTS) -o $(BIN_NAME)
+ 
+ # Assemble TVM from the assembly sources provided by AS_SOURCES
+ tinyvm-asm: $(AS_OBJECTS)
+-	$(CC) $(LFLAGS) $(AS_OBJECTS) -o $(BIN_NAME)
++	$(CC) $(LDFLAGS) $(AS_OBJECTS) -o $(BIN_NAME)
+ 
+ # Compile TVM to assembly
+ asm:	$(AS_SOURCES)
