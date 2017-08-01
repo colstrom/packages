@@ -1,0 +1,11 @@
+
+# -*- shell-script -*-
+
+package=(
+    name=geos
+    version=3.6.1
+    origin=http://download.osgeo.org/geos
+    files=(
+        geos-${_.version}.tar.bz2
+    )
+)
