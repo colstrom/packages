@@ -1,0 +1,11 @@
+
+# -*- shell-script -*-
+
+package=(
+    name=tiff
+    version=3.8.2
+    origin=http://dl.maptools.org/dl/libtiff
+    files=(
+        tiff-${_.version}.tar.gz
+    )
+)
