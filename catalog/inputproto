@@ -1,0 +1,11 @@
+
+# -*- shell-script -*-
+
+package=(
+    name=inputproto
+    version=2.0.1
+    origin=https://www.x.org/releases/X11R7.6/src/proto
+    files=(
+        inputproto-${_.version}.tar.bz2
+    )
+)
