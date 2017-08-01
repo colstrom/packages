@@ -1,0 +1,22 @@
+
+# -*- shell-script -*-
+
+package=(
+    name=isl
+    version=0.18
+    origin=http://isl.gforge.inria.fr
+    files=(
+        isl-${_.version}.tar.xz
+    )
+    needs=(
+        packages=(
+            gmp
+        )
+    )
+)
+
+configure=(
+    options=(
+        --with-gmp-prefix=/package/gmp
+    )
+)
