@@ -1,0 +1,27 @@
+
+# -*- shell-script -*-
+
+package=(
+    name=libidn
+    version=1.33
+    origin=https://ftp.gnu.org/gnu/libidn
+    files=(
+        libidn-${_.version}.tar.gz
+    )
+    needs=(
+        packages=(
+            libiconv
+            pth
+        )
+    )
+)
+
+configure=(
+    options=(
+        --enable-shared
+        --enable-static
+        --with-libiconv-prefix=/package/libiconv
+        --with-libpth-prefix=/package/pth
+        --with-pic
+    )
+)
