@@ -1,0 +1,20 @@
+
+# -*- shell-script -*-
+
+package=(
+    name=libtool
+    version=2.4.6
+    origin=https://ftp.gnu.org/gnu/libtool
+    files=(
+        libtool-${_.version}.tar.xz
+    )
+)
+
+configure=(
+    options=(
+        --enable-ltdl-install
+        --enable-shared
+        --enable-static
+        --with-pic
+    )
+)
