@@ -1,0 +1,26 @@
+
+# -*- shell-script -*-
+
+package=(
+    name=findutils
+    version=4.6.0
+    origin=https://ftp.gnu.org/gnu/findutils
+    files=(
+        findutils-${_.version}.tar.gz
+    )
+    needs=(
+        packages=(
+            libiconv
+            pth
+        )
+    )
+)
+
+configure=(
+    options=(
+        --enable-threads=posix
+        --program-prefix=g
+        --with-libiconv-prefix=/package/libiconv
+        --with-libpth-prefix=/package/pth
+    )
+)
