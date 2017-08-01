@@ -1,0 +1,11 @@
+
+# -*- shell-script -*-
+
+package=(
+    name=postgresql
+    version=9.6.3
+    origin=https://ftp.postgresql.org/pub/source/v${_.version}
+    files=(
+        postgresql-${_.version}.tar.bz2
+    )
+)
