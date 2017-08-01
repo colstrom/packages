@@ -1,0 +1,33 @@
+
+# -*- shell-script -*-
+
+package=(    
+    name=pixz
+    version=1.0.6
+    origin=https://github.com/vasi/pixz/releases/download/v${_.version}
+    files=(
+        pixz-${_.version}.tar.xz
+    )
+    needs=(
+        packages=(
+            libarchive
+            xz
+        )
+    )
+)
+
+configure=(
+    arguments=(
+        "LIBARCHIVE_CFLAGS=-I/package/libarchive/include -Os -m64"
+        "LIBARCHIVE_LIBS=-L/package/libarchive/lib -larchive"
+        "LZMA_CFLAGS=-I/package/xz/lib -Os -m64"
+        "LZMA_LIBS=-L/package/xz/lib -llzma"
+    )
+)
+
+build=(
+    CPPFLAGS=(
+        -I/package/libarchive/include
+        -I/package/xz/include
+    )
+)
