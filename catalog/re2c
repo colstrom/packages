@@ -1,0 +1,11 @@
+
+# -*- shell-script -*-
+
+package=(
+    name=re2c
+    version=0.16
+    origin=https://github.com/skvadrik/re2c/releases/download/${_.version}
+    files=(
+        re2c-${_.version}.tar.gz
+    )
+)
