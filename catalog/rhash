@@ -1,0 +1,33 @@
+
+# -*- shell-script -*-
+
+package=(
+    name=rhash
+    version=1.3.4
+    origin=https://github.com/rhash/RHash/archive
+    files=(
+        v${_.version}.tar.gz
+    )
+    requires=(
+        make_arguments=1
+    )
+)
+
+build=(
+    dir=RHash-${package.version}
+)
+
+make=(
+    arguments=(
+        "CC=${CC}"
+    )
+)
+
+(( system.is.SunOS )) && make.arguments+= ( "INSTALL=/usr/ucb/install" )
+
+function overlay
+{
+    [[ -d ${WORKDIR} ]] || unpack
+    
+    sed -i'' -e 's#+make #+gmake #g' ${WORKDIR}/Makefile
+}
