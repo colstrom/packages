@@ -1,0 +1,44 @@
+
+# -*- shell-script -*-
+
+package=(
+    name=udns
+    version=0.4
+    origin=http://www.corpit.ru/mjt/udns
+    files=(
+        udns-${_.version}.tar.gz
+    )
+    supports=(
+        configure=0
+    )
+    requires=(
+        make_arguments=1
+    )
+)
+
+configure=(
+    options=(
+        --enable-ipv6
+    )
+)
+
+function install
+{
+    build
+    cd ${WORKDIR}
+
+    ${INSTALL} -d ${PACKAGE}/bin
+    ${INSTALL} -c ${PACKAGE}/bin -m 0755 dns-get
+    ${INSTALL} -c ${PACKAGE}/bin -m 0755 rblcheck
+    ${INSTALL} -c ${PACKAGE}/bin -m 0755 ex-rdns
+
+    ${INSTALL} -d ${PACKAGE}/share/man/man1
+    ${INSTALL} -c ${PACKAGE}/share/man/man1 -m 0644 dns-get.1
+    ${INSTALL} -c ${PACKAGE}/share/man/man1 -m 0644 rblcheck.1
+    
+    ${INSTALL} -d ${PACKAGE}/share/man/man3
+    ${INSTALL} -c ${PACKAGE}/share/man/man3 -m 0644 udns.3
+
+    ${INSTALL} -d ${PACKAGE}/include
+    ${INSTALL} -c ${PACKAGE}/include -m 0644 udns.h
+}
