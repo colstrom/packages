@@ -1,0 +1,22 @@
+
+# -*- shell-script -*-
+
+package=(
+    name=tokyodystopia
+    version=0.9.15
+    origin=http://fallabs.com/tokyodystopia
+    files=(
+        tokyodystopia-${_.version}.tar.gz
+    )
+    needs=(
+        packages=(
+            tokyocabinet
+        )
+    )
+)
+
+configure=(
+    options=(
+        --with-tc=/package/tokyocabinet
+    )
+)
