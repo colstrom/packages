@@ -1,0 +1,29 @@
+
+# -*- shell-script -*-
+
+package=(
+    name=libunistring
+    version=0.9.7
+    origin=https://ftp.gnu.org/gnu/libunistring
+    files=(
+        libunistring-${_.version}.tar.xz
+    )
+    needs=(
+        packages=(
+            libiconv
+            pth
+        )
+    )
+)
+
+configure=(
+    options=(
+        --enable-relocatable
+        --enable-shared
+        --enable-static
+        --enable-threads=pth
+        --with-libiconv-prefix=/package/libiconv
+        --with-libpth-prefix=/package/libpth
+        --with-pic
+    )
+)
