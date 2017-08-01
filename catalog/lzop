@@ -1,0 +1,25 @@
+
+# -*- shell-script -*-
+
+package=(
+    name=lzop
+    version=1.03
+    origin=http://www.lzop.org/download
+    files=(
+        lzop-${_.version}.tar.gz
+    )
+    needs=(
+        packages=(
+            lzo
+        )
+    )
+)
+
+build=(
+    CPPFLAGS=(
+        -I/package/lzo/include
+    )
+    LDFLAGS=(
+        -L/package/lzo/lib
+    )
+)
