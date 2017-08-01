@@ -1,0 +1,11 @@
+
+# -*- shell-script -*-
+
+package=(
+    name=conflict
+    version=20150705
+    origin=ftp://invisible-island.net/conflict
+    files=(
+        conflict-${_.version}.tgz
+    )
+)
