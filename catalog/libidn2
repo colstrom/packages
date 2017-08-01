@@ -1,0 +1,26 @@
+
+# -*- shell-script -*-
+
+package=(
+    name=libidn2
+    version=2.0.3
+    origin=https://ftp.gnu.org/gnu/libidn
+    files=(
+        libidn2-${_.version}.tar.gz
+    )
+    needs=(
+        packages=(
+            libiconv
+        )
+    )
+)
+
+configure=(
+    options=(
+        --disable-doc
+        --enable-shared
+        --enable-static
+        --with-libiconv-prefix=/package/libiconv
+        --with-pic
+    )
+)
