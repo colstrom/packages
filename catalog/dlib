@@ -1,0 +1,27 @@
+
+# -*- shell-script -*-
+
+package=(
+    name=dlib
+    version=19.4
+    origin=http://dlib.net/files
+    files=(
+        dlib-${_.version}.tar.bz2
+    )
+    supports=(
+        cmake=1
+    )
+)
+
+build=(
+    CFLAGS=(
+        -U_XOPEN_SOURCE
+        -D_XOPEN_SOURCE=700
+        -std=c11
+    )
+    CXXFLAGS=(
+        -U_XOPEN_SOURCE
+        -D_XOPEN_SOURCE=700
+        -std=c++14
+    )
+)
