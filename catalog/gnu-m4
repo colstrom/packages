@@ -1,0 +1,32 @@
+
+# -*- shell-script -*-
+
+package=(
+    name=gnu-m4
+    version=1.4.18
+    origin=https://ftp.gnu.org/gnu/m4
+    files=(
+        m4-${_.version}.tar.xz
+    )
+    needs=(
+        packages=(
+            libsigsegv
+            pth
+        )
+    )
+)
+
+configure=(
+    options=(
+        --enable-c++
+        --enable-changeword
+        --enable-threads=posix
+        --program-prefix=g
+        --with-libsigsegv-prefix=/package/libsigsegv
+        --with-libpth-prefix=/package/pth
+    )
+)
+
+build=(
+    dir=m4-${package.version}
+)
