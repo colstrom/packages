@@ -1,0 +1,29 @@
+
+# -*- shell-script -*-
+
+package=(
+    name=kyototycoon
+    version=0.9.56
+    origin=http://fallabs.com/kyototycoon/pkg
+    files=(
+        kyototycoon-${_.version}.tar.gz
+    )
+    needs=(
+        packages=(
+            kyotocabinet
+        )
+    )
+)
+
+configure=(
+    options=(
+        --enable-uyield
+        --with-kc=/package/kyotocabinet
+    )
+)
+
+build=(
+    CFLAGS=(
+        -std=c99
+    )
+)
