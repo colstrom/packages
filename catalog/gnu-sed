@@ -1,0 +1,30 @@
+
+# -*- shell-script -*-
+
+package=(
+    name=gnu-sed
+    version=4.4
+    origin=https://ftp.gnu.org/gnu/sed
+    files=(
+        sed-${_.version}.tar.xz
+    )
+    needs=(
+        packages=(
+            libiconv
+            pth
+        )
+    )
+)
+
+configure=(
+    options=(
+        --enable-threads=posix
+        --program-prefix=g
+        --with-libiconv-prefix=/package/libiconv
+        --with-libpth-prefix=/package/pth
+    )
+)
+
+build=(
+    dir=sed-${package.version}
+)
