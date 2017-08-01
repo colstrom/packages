@@ -1,0 +1,31 @@
+
+# -*- shell-script -*-
+
+package=(
+    name=lua
+    version=5.3.4
+    origin=https://www.lua.org/ftp
+    files=(
+        lua-${_.version}.tar.gz
+    )
+    requires=(
+        make_arguments=1
+    )
+)
+
+case ${OS} in
+    SunOS)    make.arguments+= ( solaris )  ;;
+    Darwin)   make.arguments+= ( macosx  )  ;;
+    FreeBSD)  make.arguments+= ( freebsd )  ;;
+    *BSD)     make.arguments+= ( bsd     )  ;;
+    Linux)    make.arguments+= ( linux   )  ;;
+    *)        make.arguments+= ( generic )  ;;
+esac
+
+make=(
+    arguments=(
+        "INSTALL_TOP=${ROOT}/package/.${package.name}/${package.version}"
+    )
+)
+
+(( system.is.SunOS )) && make.arguments+= ( "INSTALL=/usr/ucb/install" )
