@@ -1,0 +1,11 @@
+
+# -*- shell-script -*-
+
+package=(
+    name=libatomic_ops
+    version=7.4.4
+    origin=http://www.hboehm.info/gc/gc_source
+    files=(
+        libatomic_ops-${_.version}.tar.gz
+    )
+)
