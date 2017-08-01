@@ -1,0 +1,63 @@
+
+# -*- shell-script -*-
+
+package=(
+    name=s6-rc
+    version=0.2.1.1
+    origin=https://skarnet.org/software/s6-rc
+    files=(
+        s6-rc-${_.version}.tar.gz
+    )
+    needs=(
+        packages=(
+            execline
+            s6
+            skalibs
+        )
+    )
+    requires=(
+        make_arguments=1
+    )
+)
+
+configure=(
+    options=(
+        --enable-absolute-paths
+        --with-dynlib=/package/skalibs/lib
+        --with-include=/package/skalibs/include
+        --with-lib=/package/skalibs/lib/skalibs
+        --with-sysdeps=/package/skalibs/lib/skalibs/sysdeps
+        --with-dynlib=/package/execline/lib
+        --with-include=/package/execline/include
+        --with-lib=/package/execline/lib/execline
+        --with-dynlib=/package/s6/lib
+        --with-include=/package/s6/include
+        --with-lib=/package/s6/lib/s6
+    )
+)
+
+export PATH=/usr/xpg4/bin:${PATH}
+
+make.arguments+=(
+    "CFLAGS_ALL=${build.CFLAGS[*]}"
+)
+
+function __skarnet_patch
+{
+    set ${GLOBAL_OPTIONS}
+
+    [[ -d ${WORKDIR} ]] || unpack
+
+    cd ${WORKDIR}
+
+    if [[ -x patch-for-solaris ]] && [[ $(uname -s) == SunOS ]]
+    then
+        ./patch-for-solaris
+    fi
+}
+
+function patch
+{
+    __skarnet_patch
+    __default_patch
+}
