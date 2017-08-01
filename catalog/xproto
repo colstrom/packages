@@ -1,0 +1,11 @@
+
+# -*- shell-script -*-
+
+package=(
+    name=xproto
+    version=7.0.20
+    origin=https://www.x.org/releases/X11R7.6/src/proto
+    files=(
+        xproto-${_.version}.tar.bz2
+    )
+)
