@@ -1,0 +1,11 @@
+
+# -*- shell-script -*-
+
+package=(
+    name=zsync
+    version=0.6.2
+    origin=http://zsync.moria.org.uk/download
+    files=(
+        zsync-${_.version}.tar.bz2
+    )
+)
