@@ -1,0 +1,50 @@
+
+# -*- shell-script -*-
+
+package=(
+    name=skalibs
+    version=2.5.1.1
+    origin=https://skarnet.org/software/skalibs
+    files=(
+        skalibs-${_.version}.tar.gz
+    )
+    requires=(
+        make_arguments=1
+    )
+)
+
+configure=(
+    options=(
+        --enable-absolute-paths
+        --enable-clock
+        --enable-iopause-select
+        --enable-monotonic
+        --with-default-path=/command:$(${GETCONF} PATH)
+    )
+)
+
+export PATH=/usr/xpg4/bin:${PATH}
+
+make.arguments+=(
+    "CFLAGS_ALL=${build.CFLAGS[*]}"
+)
+
+function __skarnet_patch
+{
+    set ${GLOBAL_OPTIONS}
+
+    [[ -d ${WORKDIR} ]] || unpack
+
+    cd ${WORKDIR}
+
+    if [[ -x patch-for-solaris ]] && [[ $(uname -s) == SunOS ]]
+    then
+        ./patch-for-solaris
+    fi
+}
+
+function patch
+{
+    __skarnet_patch
+    __default_patch
+}
