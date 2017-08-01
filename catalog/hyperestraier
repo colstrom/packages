@@ -1,0 +1,31 @@
+
+# -*- shell-script -*-
+
+package=(
+    name=hyperestraier
+    version=1.4.13
+    origin=http://fallabs.com/hyperestraier
+    files=(
+        hyperestraier-${_.version}.tar.gz
+    )
+    needs=(
+        packages=(
+            qdbm
+        )
+    )
+)
+
+configure=(
+    options=(
+        --enable-stable
+    )
+)
+
+build=(
+    CPPFLAGS=(
+        -I/package/qdbm/include
+    )
+    LDFLAGS=(
+        -L/package/qdbm/lib
+    )
+)
