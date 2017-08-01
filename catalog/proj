@@ -1,0 +1,17 @@
+
+# -*- shell-script -*-
+
+package=(
+    name=proj
+    version=4.9.3
+    origin=http://download.osgeo.org/proj
+    files=(
+        proj-${_.version}.tar.gz
+    )
+)
+
+build=(
+    CPPFLAGS=(
+        -D_XOPEN_SOURCE=700
+    )
+)
