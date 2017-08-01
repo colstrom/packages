@@ -1,0 +1,19 @@
+
+# -*- shell-script -*-
+
+package=(
+    name=libpqxx
+    version=4.0.1
+    origin=http://pqxx.org/download/software/libpqxx
+    files=(
+        libpqxx-${_.version}.tar.gz
+    )
+)
+
+configure=(
+    options=(
+        --enable-shared
+        --enable-static
+        --with-pic
+    )
+)
