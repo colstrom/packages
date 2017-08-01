@@ -1,0 +1,11 @@
+
+# -*- shell-script -*-
+
+package=(
+    name=nghttp2
+    version=1.24.0
+    origin=https://github.com/nghttp2/nghttp2/releases/download/v${_.version}
+    files=(
+        nghttp2-${_.version}.tar.xz
+    )
+)
