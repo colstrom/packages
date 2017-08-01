@@ -1,0 +1,23 @@
+
+# -*- shell-script -*-
+
+package=(
+    name=gc
+    version=7.6.0
+    origin=http://www.hboehm.info/gc/gc_source
+    files=(
+        gc-${_.version}.tar.gz
+    )
+    needs=(
+        packages=(
+            libatomic_ops
+        )
+    )
+)
+
+configure=(
+    arguments=(
+        "ATOMIC_OPS_CFLAGS=-I/package/libatomic_ops/include"
+        "ATOMIC_OPS_LIBS=-L/package/libatomic_ops/lib"
+    )
+)
