@@ -37,6 +37,7 @@ ENOTSUP=48
 ###########
 
 options=(
+    dump=0
     verbose=0
 )
 
