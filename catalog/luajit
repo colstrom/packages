@@ -1,0 +1,26 @@
+
+# -*- shell-script -*-
+
+package=(
+    name=luajit
+    version=2.0.5
+    origin=http://luajit.org/download
+    files=(
+        LuaJIT-${_.version}.tar.gz
+    )
+    requires=(
+        make_arguments=1
+    )
+)
+
+build=(
+    dir=LuaJIT-${package.version}
+)
+
+if (( system.is.SunOS ))
+then
+    make.arguments+= (
+        "INSTALL_X=/usr/ucb/install -m 0755"
+        "INSTALL_F=/usr/ucb/install -m 0644"
+    )
+fi
