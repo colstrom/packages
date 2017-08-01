@@ -1,0 +1,11 @@
+
+# -*- shell-script -*-
+
+package=(
+    name=c-ares
+    version=1.13.0
+    origin=https://c-ares.haxx.se/download
+    files=(
+        c-ares-${_.version}.tar.gz
+    )
+)
