@@ -1,0 +1,67 @@
+
+# -*- shell-script -*-
+
+package=(
+    name=newlisp
+    version=10.7.1
+    origin=http://www.newlisp.org/downloads
+    files=(
+        newlisp-${_.version}.tgz
+    )
+)
+
+function patch
+{
+    set ${GLOBAL_OPTIONS}
+
+    [[ -d ${WORKDIR} ]] || unpack
+
+    cd ${WORKDIR}
+
+    sed \
+        -i'' \
+        -e "s#  -install #      -/usr/ucb/install #" \
+        makefile_original_install
+
+        # -e 's#.*GUI-Server install#install_guiserver:#' \
+        # -e 's#$(datadir)/doc/newlisp/COPYING#$(prefix)/misc/COPYING#' \
+        # -e 's#$(datadir)/doc/newlisp/CREDITS#$(prefix)/misc/CREDITS#' \
+        # -e 's#$(datadir)/doc/newlisp#$(prefix)/manual/html#' \
+        # -e 's#$(datadir)/newlisp#$(prefix)#' \
+        # -e 's#$(prefix)/util#$(prefix)/misc/util#' \
+}
+
+function build
+{
+    set ${GLOBAL_OPTIONS}
+          
+    [[ -d ${WORKDIR} ]] || prepare
+
+    cd ${WORKDIR}
+
+    case $(uname -s) in
+        SunOS)
+            smake -f makefile_sunosLP64_utf8
+            ;;
+        *)
+            smake
+            ;;
+    esac
+}
+
+function install
+{
+    set ${GLOBAL_OPTIONS}
+
+    [[ -f ${WORKDIR}/makefile_install ]] || configure
+    
+    build
+
+    cd ${WORKDIR}
+
+    ${INSTALL} -d ${PACKAGE}/bin
+    ${INSTALL} -d ${PACKAGE}/share/man/man1
+    
+    smake install \
+          prefix=${PACKAGE}
+}
