@@ -1,0 +1,11 @@
+
+# -*- shell-script -*-
+
+package=(
+    name=shtool
+    version=2.0.8
+    origin=ftp://ftp.gnu.org/gnu/shtool
+    files=(
+        shtool-${_.version}.tar.gz
+    )
+)
