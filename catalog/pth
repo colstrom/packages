@@ -1,0 +1,20 @@
+
+# -*- shell-script -*-
+
+package=(
+    name=pth
+    version=2.0.7
+    origin=https://ftp.gnu.org/gnu/pth
+    files=(
+        pth-${_.version}.tar.gz
+    )
+)
+
+configure=(
+    options=(
+        --enable-batch
+        --enable-shared
+        --enable-static
+        --with-pic
+    )
+)
