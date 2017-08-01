@@ -1,0 +1,11 @@
+
+# -*- shell-script -*-
+
+package=(
+    name=libxml2
+    version=2.9.4
+    origin=ftp://xmlsoft.org/libxml2
+    files=(
+        libxml2-${_.version}.tar.gz
+    )
+)
