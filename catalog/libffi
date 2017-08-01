@@ -1,0 +1,11 @@
+
+# -*- shell-script -*-
+
+package=(    
+    name=libffi
+    version=3.2.1
+    origin=ftp://sourceware.org/pub/libffi
+    files=(
+        libffi-${_.version}.tar.gz
+    )
+)
