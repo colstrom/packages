@@ -1,0 +1,40 @@
+
+# -*- shell-script -*-
+
+package=(
+    name=star
+    version=1.5.3
+    origin=https://sourceforge.net/projects/s-tar/files
+    files=(
+        star-${_.version}.tar.bz2
+    )
+)
+
+function configure
+{
+    :
+}
+
+function build
+{
+    [[ -d ${WORKDIR} ]] || prepare
+
+    cd ${WORKDIR}
+
+    env \
+        INS_BASE=${PACKAGE} \
+        CCOM=gcc64 \
+        make -e
+}
+
+function install
+{
+    build
+
+    cd ${WORKDIR}
+    
+    env \
+        INS_BASE=${PACKAGE} \
+        CCOM=gcc64 \
+        make -e install
+}
