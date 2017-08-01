@@ -1,0 +1,20 @@
+
+# -*- shell-script -*-
+
+package=(
+    name=libiconv
+    version=1.15
+    origin=https://ftp.gnu.org/gnu/libiconv
+    files=(
+        libiconv-${_.version}.tar.gz
+    )
+)
+
+configure=(
+    options=(
+        --enable-relocatable
+        --enable-shared
+        --enable-static
+        --with-pic
+    )
+)
