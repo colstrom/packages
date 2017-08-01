@@ -1,0 +1,11 @@
+
+# -*- shell-script -*-
+
+package=(
+    name=autoconf
+    version=2.69
+    origin=https://ftp.gnu.org/gnu/autoconf
+    files=(
+        autoconf-${_.version}.tar.xz
+    )
+)
