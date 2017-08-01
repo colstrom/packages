@@ -418,19 +418,6 @@ else
     (( system.bits )) || system.bits=64
 fi
 
-####################
-# Basic Structures #
-####################
-
-configure= ( typeset -a arguments options )
-make=      ( typeset -a arguments options )
-cmake=     ( typeset -a arguments options )
-ninja=     ( typeset -a arguments options )
-
-build=(
-    typeset -a CFLAGS CPPCLAGS CXXFLAGS LDFLAGS LIBLDFLAGS LIBS
-)
-
 #########################
 # Package Specification #
 #########################
@@ -452,8 +439,35 @@ else
     . ${ROOT}/.package/catalog/${1}
 fi
 
-typeset -C package package.{needs,requires,supports}
-typeset -a package.{files,depends.{host,packages}}
+##########################
+# Specification Defaults #
+##########################
+
+for property in needs requires supports
+do
+    [[ -v package.${property} ]] || typeset -C package.${property}
+done
+
+for property in files needs.host needs.packages
+do
+    [[ -v package.${property} ]] || typeset -a package.${property}
+done
+
+for object in configure make cmake ninja
+do
+    [[ -v ${object} ]] || typeset -C ${object}
+    for property in options arguments
+    do
+	[[ -v ${object}.${property} ]] || typeset -a ${object}.${property}
+    done
+done
+
+[[ -v build ]] || typeset -C build
+
+for property in CFLAGS CPPFLAGS CXXFLAGS LDFLAGS LIBLDFLAGS LIBS
+do
+    [[ -v build.${property} ]] || typeset -a build.${property}
+done
 
 #######################
 # Derived Environment #
