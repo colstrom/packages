@@ -1,0 +1,25 @@
+
+# -*- shell-script -*-
+
+package=(
+    name=diffutils
+    version=3.6
+    origin=https://ftp.gnu.org/gnu/diffutils
+    files=(
+        diffutils-${_.version}.tar.xz
+    )
+    needs=(
+        packages=(
+            libiconv
+            libsigsegv
+        )
+    )
+)
+
+configure=(
+    options=(
+        --program-prefix=g
+        --with-libiconv-prefix=/package/libiconv
+        --with-libsigsegv-prefix=/package/libsigsegv
+    )
+)
