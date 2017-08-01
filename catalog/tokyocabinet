@@ -1,0 +1,17 @@
+
+# -*- shell-script -*-
+
+package=(
+    name=tokyocabinet
+    version=1.4.48
+    origin=http://fallabs.com/tokyocabinet
+    files=(
+        tokyocabinet-${_.version}.tar.gz
+    )
+)
+
+configure=(
+    options=(
+        --enable-uyield
+    )
+)
