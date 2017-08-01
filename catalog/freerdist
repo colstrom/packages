@@ -1,0 +1,11 @@
+
+# -*- shell-script -*-
+
+package=(
+    name=freerdist
+    version=0.94
+    origin=ftp://ftp.astron.com/pub/freerdist
+    files=(
+        freerdist-${_.version}.tar.gz
+    )
+)
