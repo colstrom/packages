@@ -21,7 +21,7 @@
 # LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 # THE SOFTWARE.
-   
+
 PROGRAM_NAME=${0##*/}
 
 ##########
@@ -42,13 +42,15 @@ options=(
 
 while getopts -a "${PROGRAM_NAME}" '[-1c]
 [v:verbose?Enable verbose output.]
+[d:dump?Dump configuration and exit.]
 
 <package> <action>
 
 ' OPTION
 do
     case ${OPTION} in
-	v) options.verbose=1 ;;
+        d) options.dump=1    ;;
+	      v) options.verbose=1 ;;
     esac
 done
 
@@ -103,29 +105,29 @@ function repack
     file=${1}
 
     [[ ${file} =~ '.tar.xz$' ]] && return
-    
+
     suffix=${file##*.}
 
     case ${suffix} in
-	gz|tgz)           ${GUNZIP}      -f ${file}  ;;
-	bz|bz2|tbz|tbz2)  ${BUNZIP2}     -f ${file}  ;;
-	xz|txz)           ${XZ}       -d -f ${file}  ;;
-	lz4|tlz4)         ${LZ4} --rm -d -f ${file}  ;;
-	tar)              :                          ;;
-	*)
-	    print -r -u 2 "ENOTSUP: ${file}: ${suffix} is not supported."
-	    exit ${ENOTSUP}
-	    ;;
+	      gz|tgz)           ${GUNZIP}      -f ${file}  ;;
+	      bz|bz2|tbz|tbz2)  ${BUNZIP2}     -f ${file}  ;;
+	      xz|txz)           ${XZ}       -d -f ${file}  ;;
+	      lz4|tlz4)         ${LZ4} --rm -d -f ${file}  ;;
+	      tar)              :                          ;;
+	      *)
+	          print -r -u 2 "ENOTSUP: ${file}: ${suffix} is not supported."
+	          exit ${ENOTSUP}
+	          ;;
     esac
 
     case ${suffix} in
-	gz|bz|bz2|lz4|xz)       tarfile=${file%.*}      ;;
-	tgz|tbz|tbz2|tlz4|txz)  tarfile=${file%.*}.tar  ;;
-	tar)                    tarfile=${file}         ;;
-	*)
-	    print -r -u 2 "ENOTSUP: ${file}: ${suffix} is not supported."
-	    exit ${ENOTSUP}
-	    ;;
+	      gz|bz|bz2|lz4|xz)       tarfile=${file%.*}      ;;
+	      tgz|tbz|tbz2|tlz4|txz)  tarfile=${file%.*}.tar  ;;
+	      tar)                    tarfile=${file}         ;;
+	      *)
+	          print -r -u 2 "ENOTSUP: ${file}: ${suffix} is not supported."
+	          exit ${ENOTSUP}
+	          ;;
     esac
 
     ${XZ} -f ${tarfile}
@@ -139,9 +141,9 @@ function fetch
 
     for file in ${@:-${package.files[@]}}
     do
-	[[ -f ${IN_PACKAGE}/${file} ]] && continue
-	
-	${CURL} -L -o ${IN_PACKAGE}/${file} ${package.origin}/${file}
+	      [[ -f ${IN_PACKAGE}/${file} ]] && continue
+
+	      ${CURL} -L -o ${IN_PACKAGE}/${file} ${package.origin}/${file}
     done
 }
 
@@ -153,16 +155,15 @@ function unpack
 
     for file in ${package.files[@]}
     do
-	[[ -f ${IN_PACKAGE}/${file} ]] || fetch ${file}
+	      [[ -f ${IN_PACKAGE}/${file} ]] || fetch ${file}
 
-	if [[ ${file} =~ '.zip$' ]]
-	then
-	    ${MKDIR_P} ${WORKDIR}
-	    ${UNZIP} -o -d ${WORKDIR} ${IN_PACKAGE}/${file}
-	else
-	    ${TAR} -x -f ${IN_PACKAGE}/${file} -C ${WORK_PACKAGE}
-	fi
-	    
+	      if [[ ${file} =~ '.zip$' ]]
+	      then
+	          ${MKDIR_P} ${WORKDIR}
+	          ${UNZIP} -o -d ${WORKDIR} ${IN_PACKAGE}/${file}
+	      else
+	          ${TAR} -x -f ${IN_PACKAGE}/${file} -C ${WORK_PACKAGE}
+	      fi
     done
 }
 
@@ -177,9 +178,9 @@ function patches
 
     if [[ -d ${IN}/patches/${package.name}-${package.version} ]]
     then	
-	${FIND} ${IN}/patches/${package.name}-${package.version} -type f -name "*.patch" \
-	    | ${SED} -e "s#^${IN}/patches/${package.name}-${package.version}/##" \
-	    | ${SORT} -n
+	      ${FIND} ${IN}/patches/${package.name}-${package.version} -type f -name "*.patch" \
+	          | ${SED} -e "s#^${IN}/patches/${package.name}-${package.version}/##" \
+	          | ${SORT} -n
     fi
 }
 
@@ -193,10 +194,10 @@ function patch
 
     for p in $(patches)
     do
-	patch=${IN}/patches/${package.name}-${package.version}/${p}
-	file=$(dirname ${p})
+	      patch=${IN}/patches/${package.name}-${package.version}/${p}
+	      file=$(dirname ${p})
 
-	${PATCH} -i ${patch} ${file}
+	      ${PATCH} -i ${patch} ${file}
     done
 }
 
@@ -210,17 +211,17 @@ function configure
 
     if [[ -x configure ]]
     then
-	./configure "${configure.options[@]}" "${configure.arguments[@]}"
+	      ./configure "${configure.options[@]}" "${configure.arguments[@]}"
     else
-	if [[ -x autogen.sh ]]
-	then
-	    ./autogen.sh
-	    ${.sh.fun}
+	      if [[ -x autogen.sh ]]
+	      then
+	          ./autogen.sh
+	          ${.sh.fun}
         elif [[ -f configure.ac ]]
         then
             ${AUTORECONF_I}
             ${.sh.fun}
-	fi
+	      fi
     fi
 }
 
@@ -236,7 +237,7 @@ function prepare
 function build
 {
     set ${GLOBAL_OPTIONS}
-    
+
     ${MAKE} -C ${WORKDIR} "${make.options[@]}" "${make.arguments[@]}"
 }
 
@@ -279,18 +280,18 @@ function needs
 
     for need in ${package.needs.packages[@]}
     do
-	if [[ -f ${CATALOG}/${need} ]]
-	then
-	    with-package ${CATALOG}/${need} needs
+	      if [[ -f ${CATALOG}/${need} ]]
+	      then
+	          with-package ${CATALOG}/${need} needs
         fi
-	print -r -- "${need} ${package.name}"
+	      print -r -- "${need} ${package.name}"
     done
 }
 
 function configure__help
 {
     set ${GLOBAL_OPTIONS}
-    
+
     [[ -d ${WORKDIR} ]]           || unpack
     [[ -x ${WORKDIR}/configure ]] || return
 
@@ -314,6 +315,8 @@ function show
 # System #
 ##########
 
+(( options.dump )) && set -o xtrace
+
 : ${AR:=$(whence -p ar)}
 : ${AUTORECONF:=$(whence -p autoreconf)}
 : ${BISON:=$(whence -p bison)}
@@ -335,7 +338,7 @@ function show
 : ${LD:=$(whence -p ld)}
 : ${LN:=$(whence -p ln)}
 : ${LZ4:=$(whence -p lz4)}
-: ${MAKE:=$(whence -p gmake)}
+: ${MAKE:=$(whence -p gmake || whence -p make)}
 : ${MKDIR:=$(whence -p mkdir)}
 : ${NINJA:=$(whence -p ninja)}
 : ${NPROC:=$(whence -p nproc)}
@@ -345,7 +348,7 @@ function show
 : ${RM:=$(whence -p rm)}
 : ${SED:=$(whence -p sed)}
 : ${SORT:=$(whence -p sort)}
-: ${TAR:=$(whence -p gtar)}
+: ${TAR:=$(whence -p gtar || whence -p tar)}
 : ${TOUCH:=$(whence -p touch)}
 : ${UNAME:=$(whence -p uname)}
 : ${UNZIP:=$(whence -p unzip)}
@@ -369,7 +372,12 @@ typeset -C system=(
     typeset -i is.{UNIX,Linux,SunOS,BSD,macOS,{Free,Open,Net}BSD}
 )
 
-(( system.processors )) || system.processors=$(${NPROC})
+if [[ -x ${NPROC} ]]
+then
+    (( system.processors )) || system.processors=$(${NPROC})
+else
+    (( system.processors )) || system.processors=2
+fi
 
 [[ -x ${CCACHE}  ]] && system.has.ccache=1
 [[ -x ${CLANGXX} ]] && system.has.clangxx=1
@@ -382,41 +390,44 @@ typeset -C system=(
 [[ -x ${NINJA}   ]] && system.has.ninja=1
 
 case ${OS} in
+    SunOS|Darwin|*BSD)
+        system.is.UNIX=1
+	      case ${OS} in
+	          SunOS)
+                system.is.SunOS=1
+                ;;
+	          Darwin|*BSD)
+                system.is.BSD=1
+		            case ${OS} in
+		                Darwin)  system.is.macOS=1   ;;
+		                FreeBSD) system.is.FreeBSD=1 ;;
+		                OpenBSD) system.is.OpenBSD=1 ;;
+		                NetBSD)  system.is.NetBSD=1  ;;
+		            esac
+		            ;;
+	      esac
+	      ;;
     Linux)
-                             system.is.UNIX=0
-                             system.is.Linux=1
-			     ;;
-    SunOS|Darwin|*BSD)       system.is.UNIX=1
-			     system.is.Linux=0
-	case ${OS} in
-	    SunOS)           system.is.SunOS=1
-			     ;;
-	    Darwin|*BSD)     system.is.BSD=1
-		case ${OS} in
-		    Darwin)  system.is.macOS=1   ;;
-		    FreeBSD) system.is.FreeBSD=1 ;;
-		    OpenBSD) system.is.OpenBSD=1 ;;
-		    NetBSD)  system.is.NetBSD=1  ;;
-		esac
-		;;
-	esac
-	;;
+        system.is.Linux=1
+        ;;
 esac
 
 if (( system.is.SunOS ))
 then
     : ${system.optisa:=$(${OPTISA} $(${ISALIST}))}
-    
+
     if (( ! system.bits ))
     then
-	case ${system.optisa} in
-	    amd64) system.bits=64 ;;
-	    i386)  system.bits=32 ;;
-	esac
+	      case ${system.optisa} in
+	          amd64) system.bits=64 ;;
+	          i386)  system.bits=32 ;;
+	      esac
     fi
 else
     (( system.bits )) || system.bits=64
 fi
+
+(( options.dump )) && exit
 
 #########################
 # Package Specification #
@@ -458,7 +469,7 @@ do
     [[ -v ${object} ]] || typeset -C ${object}
     for property in options arguments
     do
-	[[ -v ${object}.${property} ]] || typeset -a ${object}.${property}
+	      [[ -v ${object}.${property} ]] || typeset -a ${object}.${property}
     done
 done
 
@@ -547,7 +558,7 @@ then
     function configure
     {
         set ${GLOBAL_OPTIONS}
-        
+
         [[ -d ${WORKDIR}       ]] || unpack
         [[ -d ${WORKDIR}/build ]] || ${MKDIR_P} ${WORKDIR}/build
 
@@ -566,7 +577,7 @@ then
         set ${GLOBAL_OPTIONS}
 
         [[ -d ${WORKDIR}/build ]] || prepare
-        
+
         if (( system.has.ninja ))
         then
 	    ${NINJA} -C ${WORKDIR}/build "${ninja.options[@]}" "${ninja.arguments[@]}"
@@ -578,9 +589,9 @@ then
     function install
     {
         set ${GLOBAL_OPTIONS}
-        
+
         build
-        
+
         if (( system.has.ninja ))
         then
 	    ${NINJA} -C ${WORKDIR}/build "${ninja.options[@]}" "${ninja.arguments[@]}" install
