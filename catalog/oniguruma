@@ -1,0 +1,15 @@
+
+# -*- shell-script -*-
+
+package=(
+    name=oniguruma
+    version=6.4.0
+    origin=https://github.com/kkos/oniguruma/releases/download/v${_.version}
+    files=(
+        onig-${_.version}.tar.gz
+    )
+)
+
+build=(
+    dir=onig-${package.version}
+)
