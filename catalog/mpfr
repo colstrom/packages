@@ -1,0 +1,22 @@
+
+# -*- shell-script -*-
+
+package=(
+    name=mpfr
+    version=3.1.5
+    origin=https://ftp.gnu.org/gnu/mpfr
+    files=(
+        mpfr-${_.version}.tar.xz
+    )
+    needs=(
+        packages=(
+            gmp
+        )
+    )
+)
+
+build=(
+    CPPFLAGS=(
+        -I/package/gmp/include
+    )
+)
