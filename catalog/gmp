@@ -1,0 +1,20 @@
+
+# -*- shell-script -*-
+
+package=(
+    name=gmp
+    version=6.1.2
+    origin=https://ftp.gnu.org/gnu/gmp
+    files=(
+        gmp-${_.version}.tar.xz
+    )
+)
+
+configure=(
+    options=(
+        --enable-cxx
+        --enable-shared
+        --enable-static
+        --with-pic
+    )
+)
