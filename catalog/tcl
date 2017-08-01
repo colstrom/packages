@@ -1,0 +1,19 @@
+
+# -*- shell-script -*-
+
+package=(
+    name=tcl
+    version=8.6.6
+    origin=https://prdownloads.sourceforge.net/tcl
+    files=(
+        tcl${_.version}-src.tar.gz
+        tk${_.version}-src.tar.gz
+    )
+)
+
+build=(
+    dir=tcl${package.version}/unix
+)
+
+(( system.bits == 64 )) && configure.options+= ( --enable-64bit  )
+(( system.has.dtrace )) && configure.options+= ( --enable-dtrace )
