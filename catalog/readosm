@@ -1,0 +1,11 @@
+
+# -*- shell-script -*-
+
+package=(
+    name=readosm
+    version=1.0.0e
+    origin=http://www.gaia-gis.it/gaia-sins
+    files=(
+        readosm-${_.version}.tar.gz
+    )
+)
