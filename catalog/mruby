@@ -1,0 +1,26 @@
+
+# -*- shell-script -*-
+
+package=(
+    name=mruby
+    version=1.3.0
+    origin=https://github.com/mruby/mruby/archive
+    files=(
+        ${_.version}.tar.gz
+    )
+    requires=(
+        make_arguments=1
+    )
+)
+
+function install
+{
+    set ${GLOBAL_OPTIONS}
+    
+    build
+
+    ${MKDIR_P} ${PACKAGE}
+    
+    ${TAR} -c -f - -C ${WORKDIR}/build/host bin lib/libmruby{,_core}.a LEGAL \
+           | ${TAR} -x -f - -C ${PACKAGE}
+}
