@@ -1,0 +1,11 @@
+
+# -*- shell-script -*-
+
+package=(
+    name=automake
+    version=1.15
+    origin=https://ftp.gnu.org/gnu/automake
+    files=(
+        automake-${_.version}.tar.xz
+    )
+)
