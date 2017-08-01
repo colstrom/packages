@@ -1,0 +1,27 @@
+@@ -153,7 +153,7 @@ depend dep deps: $(SRCS) $(USRC)
+ 	done >> Makefile.tmp; \
+ 	for f in $(USRCS:.c=.o); do \
+ 	 echo "$${f%.?}: $$f \$$(LIB)"; \
+-	 echo "	\$$(LD) \$$(LDLAGS) -o \$$@ $$f \$$(LIBFL) \$$(LIBS)"; \
++	 echo "	\$$(LD) \$$(LDFLAGS) -o \$$@ $$f \$$(LIBFL) \$$(LIBS)"; \
+ 	 echo "$${f%.?}_s: $$f \$$(SOLIB)"; \
+ 	 echo "	\$$(LD) \$$(LDFLAGS) -o \$$@ $$f \$$(SOLIBFL)"; \
+ 	done >> Makefile.tmp ; \
+@@ -184,14 +184,14 @@ dnsget.o dnsget.lo: dnsget.c config.h udns.h getopt.c
+ rblcheck.o rblcheck.lo: rblcheck.c config.h udns.h getopt.c
+ ex-rdns.o ex-rdns.lo: ex-rdns.c udns.h
+ dnsget: dnsget.o $(LIB)
+-	$(LD) $(LDLAGS) -o $@ dnsget.o $(LIBFL) $(LIBS)
++	$(LD) $(LDFLAGS) -o $@ dnsget.o $(LIBFL) $(LIBS)
+ dnsget_s: dnsget.o $(SOLIB)
+ 	$(LD) $(LDFLAGS) -o $@ dnsget.o $(SOLIBFL)
+ rblcheck: rblcheck.o $(LIB)
+-	$(LD) $(LDLAGS) -o $@ rblcheck.o $(LIBFL) $(LIBS)
++	$(LD) $(LDFLAGS) -o $@ rblcheck.o $(LIBFL) $(LIBS)
+ rblcheck_s: rblcheck.o $(SOLIB)
+ 	$(LD) $(LDFLAGS) -o $@ rblcheck.o $(SOLIBFL)
+ ex-rdns: ex-rdns.o $(LIB)
+-	$(LD) $(LDLAGS) -o $@ ex-rdns.o $(LIBFL) $(LIBS)
++	$(LD) $(LDFLAGS) -o $@ ex-rdns.o $(LIBFL) $(LIBS)
+ ex-rdns_s: ex-rdns.o $(SOLIB)
+ 	$(LD) $(LDFLAGS) -o $@ ex-rdns.o $(SOLIBFL)
