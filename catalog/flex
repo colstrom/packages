@@ -1,0 +1,25 @@
+
+# -*- shell-script -*-
+
+package=(
+    name=flex
+    version=2.6.4
+    origin=https://github.com/westes/flex/files/981163
+    files=(
+        flex-${_.version}.tar.gz
+    )
+    needs=(
+        packages=(
+            libiconv
+        )
+    )
+)
+
+configure=(
+    options=(
+        --enable-shared
+        --enable-static
+        --with-pic
+        --with-libiconv-prefix=/package/libiconv
+    )
+)
