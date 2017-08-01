@@ -1,0 +1,23 @@
+
+# -*- shell-script -*-
+
+package=(
+    name=fann
+    version=2.2.0
+    origin=https://sourceforge.net/projects/fann/files/fann/${_.version}
+    files=(
+        FANN-${_.version}-Source.tar.gz
+    )
+    supports=(
+        cmake=1
+    )
+)
+
+build=(
+    CFLAGS=(
+        -U_XOPEN_SOURCE
+        -D_XOPEN_SOURCE=700
+        -std=c11
+    )
+    dir=FANN-${package.version}-Source
+)
