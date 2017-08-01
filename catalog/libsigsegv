@@ -1,0 +1,20 @@
+
+# -*- shell-script -*-
+
+package=(
+    name=libsigsegv
+    version=2.11
+    origin=https://ftp.gnu.org/gnu/libsigsegv
+    files=(
+        libsigsegv-${_.version}.tar.gz
+    )
+)
+
+configure=(
+    options=(
+        --enable-shared
+        --enable-static
+        --enable-relocatable
+        --with-pic
+    )
+)
