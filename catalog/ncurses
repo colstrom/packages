@@ -1,0 +1,31 @@
+
+# -*- shell-script -*-
+
+package=(
+    name=ncurses
+    version=6.0
+    origin=https://ftp.gnu.org/gnu/ncurses
+    files=(
+        ncurses-${_.version}.tar.gz
+        tack-1.06.tar.gz
+    )
+)
+
+configure=(
+    options=(
+        --enable-ext-colors
+        --enable-ext-mouse
+        --enable-ext-putwin
+        --enable-rpath
+        --enable-sigwinch
+        --enable-sp-funcs
+        --enable-symlinks
+        --enable-tcap-names
+        --enable-term-driver
+        --enable-widec
+        --with-pthread
+        --with-shared
+        --with-ticlib
+        --without-tests
+    )
+)
