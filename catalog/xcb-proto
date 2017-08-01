@@ -1,0 +1,11 @@
+
+# -*- shell-script -*-
+
+package=(
+    name=xcb-proto
+    version=1.6
+    origin=https://www.x.org/releases/X11R7.6/src/xcb
+    files=(
+        xcb-proto-${_.version}.tar.bz2
+    )
+)
