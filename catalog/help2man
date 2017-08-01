@@ -1,0 +1,11 @@
+
+# -*- shell-script -*-
+
+package=(
+    name=help2man
+    version=1.47.4
+    origin=https://ftp.gnu.org/gnu/help2man
+    files=(
+        help2man-${_.version}.tar.xz
+    )
+)
