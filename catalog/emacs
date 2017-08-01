@@ -1,0 +1,11 @@
+
+# -*- shell-script -*-
+
+package=(
+    name=emacs
+    version=25.2
+    origin=https://ftp.gnu.org/gnu/emacs
+    files=(
+        emacs-${_.version}.tar.xz
+    )
+)
