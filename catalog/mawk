@@ -1,0 +1,11 @@
+
+# -*- shell-script -*-
+
+package=(
+    name=mawk
+    version=1.3.4-20161120
+    origin=http://invisible-island.net/datafiles/release
+    files=(
+        mawk-${_.version}.tgz
+    )
+)
