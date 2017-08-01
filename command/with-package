@@ -370,6 +370,7 @@ typeset -C system=(
     typeset -i bits
     typeset -i processors
     typeset -C is has
+    typeset -i has.{ccache,clang,clangxx,cmake,dtrace,gcc,gxx,lld,ninja}
     typeset -i is.{UNIX,Linux,SunOS,BSD,macOS,{Free,Open,Net}BSD}
 )
 
