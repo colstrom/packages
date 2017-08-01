@@ -1,0 +1,17 @@
+
+# -*- shell-script -*-
+
+package=(
+    name=kyotocabinet
+    version=1.2.76
+    origin=http://fallabs.com/kyotocabinet/pkg
+    files=(
+        kyotocabinet-${_.version}.tar.gz
+    )
+)
+
+configure=(
+    options=(
+        --enable-uyield
+    )
+)
