@@ -1,0 +1,11 @@
+
+# -*- shell-script -*-
+
+package=(
+    name=yaml    
+    version=0.1.7
+    origin=http://pyyaml.org/download/libyaml
+    files=(
+        yaml-${_.version}.tar.gz
+    )
+)
