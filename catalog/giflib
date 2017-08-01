@@ -1,0 +1,11 @@
+
+# -*- shell-script -*-
+
+package=(
+    name=giflib
+    version=5.1.4
+    origin=https://sourceforge.net/projects/giflib/files
+    files=(
+        giflib-${_.version}.tar.gz
+    )
+)
