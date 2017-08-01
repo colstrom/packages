@@ -1,0 +1,14 @@
+
+# -*- shell-script -*-
+
+package=(
+    name=bzip2
+    version=1.0.6
+    origin=http://www.bzip.org/${_.version}
+    files=(
+        bzip2-${_.version}.tar.gz
+    )
+    requires=(
+        make_arguments=1
+    )
+)
