@@ -1,0 +1,9 @@
+@@ -17,7 +17,7 @@ esac
+ cat <<HELP
+ Adjust build options by setting the following environment variables:
+ 
+-`make env`
++`gmake env`
+ 
+ Example: build a static binary and install to your home directory
+ 
