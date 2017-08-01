@@ -1,0 +1,9 @@
+@@ -14863,7 +14863,7 @@ fi
+ #
+ { $as_echo "$as_me:${as_lineno-$LINENO}: checking keysym definitions" >&5
+ $as_echo_n "checking keysym definitions... " >&6; }
+-KEYSYMDEFDIR=`$PKG_CONFIG --variable=includedir xproto`/X11
++KEYSYMDEFDIR=/package/xproto/include/X11
+ FILES="keysymdef.h XF86keysym.h Sunkeysym.h DECkeysym.h HPkeysym.h"
+ for i in $FILES; do
+     if test -f "$KEYSYMDEFDIR/$i"; then
