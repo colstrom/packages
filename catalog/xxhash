@@ -1,0 +1,38 @@
+
+# -*- shell-script -*-
+
+package=(
+    name=xxhash
+    version=0.6.2
+    origin=https://github.com/Cyan4973/xxHash/archive
+    files=(
+        v${_.version}.tar.gz
+    )
+    requires=(
+        make_arguments=1
+    )
+)
+
+build=(
+    dir=xxHash-${package.version}
+)
+
+function install
+{
+    set ${GLOBAL_OPTIONS}
+
+    build
+
+    cd ${WORKDIR}
+
+    ${INSTALL} -d ${PACKAGE}/share/man/man1
+    ${INSTALL} -c ${PACKAGE}/share/man/man1 -m 0644 xxhsum.1
+    
+    ${INSTALL} -d ${PACKAGE}/include
+    ${INSTALL} -c ${PACKAGE}/include -m 0644 xxhash.h
+
+    ${INSTALL} -d ${PACKAGE}/bin
+    ${INSTALL} -c ${PACKAGE}/bin -m 0755 xxhsum
+    ${LN_S} xxhsum ${PACKAGE}/bin/xxh32sum
+    ${LN_S} xxhsum ${PACKAGE}/bin/xxh64sum    
+}
