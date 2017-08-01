@@ -1,0 +1,37 @@
+
+# -*- shell-script -*-
+
+package=(
+    name=ninja
+    version=1.7.2
+    origin=https://github.com/ninja-build/ninja/archive
+    files=(
+        v${_.version}.tar.gz
+    )
+)
+
+export CFLAGS='-Os -m64'
+export LDFLAGS='-Os -m64'
+
+function build
+{
+    set ${GLOBAL_OPTIONS}
+    
+    [[ -d ${WORKDIR} ]] || prepare
+
+    cd ${WORKDIR}
+
+    ./configure.py --bootstrap
+}
+
+function install
+{
+    set ${GLOBAL_OPTIONS}
+    
+    [[ -f ${WORKDIR}/ninja ]] || build
+
+    cd ${WORKDIR}
+    
+    ${INSTALL} -d ${PACKAGE}/bin
+    ${INSTALL} -c ${PACKAGE}/bin -m 755 ninja
+}
