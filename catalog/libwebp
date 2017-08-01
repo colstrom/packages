@@ -1,0 +1,25 @@
+
+# -*- shell-script -*-
+
+package=(
+    name=libwebp
+    version=0.6.0
+    origin=https://storage.googleapis.com/downloads.webmproject.org/releases/webp
+    files=(
+        libwebp-${_.version}.tar.gz
+    )
+    needs=(
+        packages=(
+            jpeg
+            giflib
+            libpng
+            tiff
+        )
+    )
+)
+
+configure=(
+    options=(
+        --with-pnglibdir=/package/libpng
+    )
+)
