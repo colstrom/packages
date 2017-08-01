@@ -1,0 +1,11 @@
+
+# -*- shell-script -*-
+
+package=(
+    name=xtrans
+    version=1.2.6
+    origin=https://www.x.org/releases/X11R7.6/src/lib
+    files=(
+        xtrans-${_.version}.tar.bz2
+    )
+)
