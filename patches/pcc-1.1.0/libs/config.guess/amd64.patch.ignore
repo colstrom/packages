@@ -1,0 +1,13 @@
+diff --git a/config.guess b/config.guess.fixed
+index 278f9e9..ac1a758 100644
+--- a/config.guess
++++ b/config.guess.fixed
+@@ -331,7 +331,7 @@ case "${UNAME_MACHINE}:${UNAME_SYSTEM}:${UNAME_RELEASE}:${UNAME_VERSION}" in
+ 	echo sparc-sun-solaris2`echo ${UNAME_RELEASE}|sed -e 's/[^.]*//'`
+ 	exit ;;
+     i86pc:SunOS:5.*:* | i86xen:SunOS:5.*:*)
+-	echo i386-pc-solaris2`echo ${UNAME_RELEASE}|sed -e 's/[^.]*//'`
++	echo amd64-pc-solaris2`echo ${UNAME_RELEASE}|sed -e 's/[^.]*//'`
+ 	exit ;;
+     sun4*:SunOS:6*:*)
+ 	# According to config.sub, this is the proper way to canonicalize

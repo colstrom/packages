@@ -1,0 +1,37 @@
+diff --git a/Makefile.in.~1.21.~ b/Makefile.in
+index 738ccc4..c541233 100644
+--- a/Makefile.in.~1.21.~
++++ b/Makefile.in
+@@ -11,22 +11,22 @@ prefix = @prefix@
+ exec_prefix = @exec_prefix@
+ libdir = @libdir@
+ 
+-CC = @CC@
+-TARGMACH = @targmach@
+-TARGOS = @targos@
+-TARGET = @target@
+-VERSION = @version@
+-PCCLIBDIR = $(libdir)/pcc/$(TARGET)/$(VERSION)/lib
+-PCCINCDIR = $(libdir)/pcc/$(TARGET)/$(VERSION)/include
++CC ?= @CC@
++TARGMACH ?= @targmach@
++TARGOS ?= @targos@
++TARGET ?= @target@
++VERSION ?= @version@
++PCCLIBDIR ?= $(libdir)/pcc/$(TARGET)/$(VERSION)/lib
++PCCINCDIR ?= $(libdir)/pcc/$(TARGET)/$(VERSION)/include
+ 
+ CPPFLAGS += @CPPFLAGS@ -I$(srcdir) @ENDIAN_FLAG@ -Dos_$(TARGOS) \
+ 	-Dmach_$(TARGMACH)
+ CPPFLAGS += -isystem $(top_srcdir)/libpcc/include
+ 
+ LIBS = @LIBS@
+-AR = @AR@
+-RANLIB = @RANLIB@
+-INSTALL = @INSTALL@
++AR ?= @AR@
++RANLIB ?= @RANLIB@
++INSTALL ?= @INSTALL@
+ 
+ HEADERS +=	float.h limits.h stdarg.h stdbool.h stddef.h \
+ 		iso646.h \

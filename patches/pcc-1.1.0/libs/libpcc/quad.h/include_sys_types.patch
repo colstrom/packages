@@ -1,0 +1,9 @@
+@@ -52,7 +52,7 @@
+  */
+ 
+ #ifndef __SunOS
+-#include <sys/types.h>
++#include "sys/types.h"
+ #endif
+ 
+ #include <limits.h>

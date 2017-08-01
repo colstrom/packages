@@ -1,0 +1,13 @@
+diff --git a/configure.ac b/configure.ac.fixed
+index b51270b..e080714 100644
+--- a/configure.ac
++++ b/configure.ac.fixed
+@@ -102,7 +102,7 @@ case "$target_os" in
+     sysv4*|sunos*|solaris*)
+ 	targos=sunos
+ 	case "$target_cpu" in
+-	    i?86) targmach=i386 ;;
++	    i?86) targmach=amd64 ;;
+ 	    sparc*) targmach=sparc64 endian=big ;;
+ 	esac
+ 	;;

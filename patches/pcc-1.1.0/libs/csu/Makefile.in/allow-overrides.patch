@@ -1,0 +1,21 @@
+diff --git a/Makefile.in.~1.12.~ b/Makefile.in
+index a688042..61e302a 100644
+--- a/Makefile.in.~1.12.~
++++ b/Makefile.in
+@@ -10,11 +10,11 @@ exec_prefix = @exec_prefix@
+ libdir = @libdir@
+ srcdir = @srcdir@
+ 
+-TARGOS = @targos@
+-TARGMACH = @targmach@
+-TARGET = @target@
+-VERSION = @version@
+-PCCLIBDIR = $(libdir)/pcc/$(TARGET)/$(VERSION)/lib
++TARGOS ?= @targos@
++TARGMACH ?= @targmach@
++TARGET ?= @target@
++VERSION ?= @version@
++PCCLIBDIR ?= $(libdir)/pcc/$(TARGET)/$(VERSION)/lib
+ 
+ CC = @CC@
+ CFLAGS = @CFLAGS@
