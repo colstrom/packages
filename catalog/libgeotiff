@@ -1,0 +1,26 @@
+
+# -*- shell-script -*-
+
+package=(
+    name=libgeotiff
+    version=1.4.2
+    origin=http://download.osgeo.org/geotiff/libgeotiff
+    files=(
+        libgeotiff-${_.version}.tar.gz
+    )
+    needs=(
+        packages=(
+            jpeg
+            proj
+            tiff
+        )
+    )
+)
+
+configure=(
+    options=(
+        --with-jpeg=/package/jpeg
+        --with-libtiff=/package/tiff
+        --with-proj=/package/proj
+    )
+)
