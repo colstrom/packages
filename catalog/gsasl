@@ -1,0 +1,29 @@
+
+# -*- shell-script -*-
+
+package=(
+    name=gsasl
+    version=1.8.0
+    origin=https://ftp.gnu.org/gnu/gsasl
+    files=(
+        gsasl-${_.version}.tar.gz
+    )
+    needs=(
+        packages=(
+            libiconv
+            readline
+            pth
+        )
+    )
+)
+
+configure=(
+    options=(
+        --enable-shared
+        --enable-static
+        --with-pic
+        --with-libiconv-prefix=/package/libiconv
+        --with-libreadline-prefix=/package/readlin
+        --with-libpth-prefix=/package/pth
+    )
+)
