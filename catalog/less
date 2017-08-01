@@ -1,0 +1,18 @@
+
+# -*- shell-script -*-
+
+package=(
+    name=less
+    version=487
+    origin=https://ftp.gnu.org/gnu/less/
+    files=(
+        less-${_.version}.tar.gz
+    )
+)
+
+configure=(
+    options=(
+        --with-regex=posix
+        --with-secure
+    )
+)
