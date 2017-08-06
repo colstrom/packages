@@ -20,6 +20,9 @@ configure=(
         --with-libiconv-prefix=/package/libiconv
         --with-libsigsegv-prefix=/package/libsigsegv
     )
+    arguments=(
+        "ACCEPT_INFERIOR_RM_PROGRAM=yes"
+    )
 )
 
 build=(
