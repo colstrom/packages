@@ -19,4 +19,7 @@ configure=(
     options=(
         --with-gmp-prefix=/package/gmp
     )
+    arguments=(
+        "ACCEPT_INFERIOR_RM_PROGRAM=yes"
+    )
 )
