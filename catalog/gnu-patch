@@ -14,6 +14,9 @@ configure=(
     options=(
         --program-prefix=g
     )
+    arguments=(
+        "ACCEPT_INFERIOR_RM_PROGRAM=yes"
+    )
 )
 
 build=(
