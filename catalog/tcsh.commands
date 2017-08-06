@@ -1,0 +1,64 @@
+#! /usr/bin/env ksh93
+# -*- shell-script -*-
+
+truss -aef \
+      -o tcsh.truss.execve \
+      -t execve \
+      with-package tcsh prepare build install
+
+fgrep execve tcsh.truss.execve \
+    | fgrep -v ENOENT \
+    | sed -e 's#.*("##' -e 's#",.*##' \
+    | sort -u
+
+commands=(
+    ./catgen
+    ./configure
+    ./conftest
+    ./gethost
+    /bin/arch
+    /bin/ld
+    /bin/sh
+    /bin/uname
+    /opt/gcc-5.1.0/libexec/gcc/i386-pc-solaris2.11/5.1.0/cc1
+    /opt/gcc-5.1.0/libexec/gcc/i386-pc-solaris2.11/5.1.0/collect2
+    /sbin/uname
+    /usr/bin/amd64/ksh93
+    /usr/bin/amd64/ld
+    /usr/bin/amd64/sort
+    /usr/bin/arch
+    /usr/bin/awk
+    /usr/bin/basename
+    /usr/bin/chmod
+    /usr/bin/cp
+    /usr/bin/diff
+    /usr/bin/echo
+    /usr/bin/env
+    /usr/bin/expr
+    /usr/bin/gas
+    /usr/bin/gcc
+    /usr/bin/gencat
+    /usr/bin/ggrep
+    /usr/bin/gmake
+    /usr/bin/gnm
+    /usr/bin/grep
+    /usr/bin/gtar
+    /usr/bin/gzip
+    /usr/bin/hostname
+    /usr/bin/i386/gas
+    /usr/bin/i386/gnm
+    /usr/bin/install
+    /usr/bin/isalist
+    /usr/bin/ksh93
+    /usr/bin/ln
+    /usr/bin/ls
+    /usr/bin/mkdir
+    /usr/bin/mv
+    /usr/bin/nproc
+    /usr/bin/optisa
+    /usr/bin/rm
+    /usr/bin/sed
+    /usr/bin/sort
+    /usr/bin/tr
+    /usr/bin/uname
+)
