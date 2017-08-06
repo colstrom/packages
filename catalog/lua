@@ -13,6 +13,12 @@ package=(
     )
 )
 
+make=(
+    arguments=(
+        "INSTALL_TOP=${ROOT}/package/.${package.name}/${package.version}"
+    )
+)
+
 case ${OS} in
     SunOS)    make.arguments+= ( solaris )  ;;
     Darwin)   make.arguments+= ( macosx  )  ;;
@@ -21,11 +27,5 @@ case ${OS} in
     Linux)    make.arguments+= ( linux   )  ;;
     *)        make.arguments+= ( generic )  ;;
 esac
-
-make=(
-    arguments=(
-        "INSTALL_TOP=${ROOT}/package/.${package.name}/${package.version}"
-    )
-)
 
 (( system.is.SunOS )) && make.arguments+= ( "INSTALL=/usr/ucb/install" )
