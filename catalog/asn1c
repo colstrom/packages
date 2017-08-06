@@ -1,0 +1,22 @@
+
+# -*- shell-script -*-
+
+package=(
+    name=asn1c
+    version=0.9.28
+    origin=https://github.com/vlm/asn1c/releases/download/v${_.version}
+    files=(
+        asn1c-${_.version}.tar.gz
+    )
+)
+
+configure=(
+    options=(
+        --enable-shared
+        --enable-static
+        --with-pic
+    )
+    arguments=(
+        "ACCEPT_INFERIOR_RM_PROGRAM=yes"
+    )
+)
