@@ -9,3 +9,9 @@ package=(
         libpng-${_.version}.tar.xz
     )
 )
+
+configure=(
+    arguments=(
+        "ACCEPT_INFERIOR_RM_PROGRAM=yes"
+    )
+)
