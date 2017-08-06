@@ -13,3 +13,9 @@ package=(
 build=(
     dir=onig-${package.version}
 )
+
+configure=(
+    arguments=(
+        "ACCEPT_INFERIOR_RM_PROGRAM=yes"
+    )
+)
