@@ -26,4 +26,7 @@ configure=(
         --with-libpth-prefix=/package/libpth
         --with-pic
     )
+    arguments=(
+        "ACCEPT_INFERIOR_RM_PROGRAM=yes"
+    )
 )
