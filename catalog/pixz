@@ -18,6 +18,7 @@ package=(
 
 configure=(
     arguments=(
+        "ACCEPT_INFERIOR_RM_PROGRAM=yes"
         "LIBARCHIVE_CFLAGS=-I/package/libarchive/include -Os -m64"
         "LIBARCHIVE_LIBS=-L/package/libarchive/lib -larchive"
         "LZMA_CFLAGS=-I/package/xz/lib -Os -m64"
