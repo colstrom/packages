@@ -30,8 +30,10 @@ configure=(
 
 export PATH=/usr/xpg4/bin:${PATH}
 
-make.arguments+=(
-    "CFLAGS_ALL=${build.CFLAGS[*]}"
+make=(
+    arguments=(
+        "CFLAGS_ALL=${build.CFLAGS[*]}"
+    )
 )
 
 function __skarnet_patch
