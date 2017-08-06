@@ -24,3 +24,9 @@ build=(
         -L/package/mpfr/lib
     )
 )
+
+configure=(
+    arguments=(
+        "ACCEPT_INFERIOR_RM_PROGRAM=yes"
+    )
+)
