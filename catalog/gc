@@ -17,6 +17,7 @@ package=(
 
 configure=(
     arguments=(
+        "ACCEPT_INFERIOR_RM_PROGRAM=yes"
         "ATOMIC_OPS_CFLAGS=-I/package/libatomic_ops/include"
         "ATOMIC_OPS_LIBS=-L/package/libatomic_ops/lib"
     )
