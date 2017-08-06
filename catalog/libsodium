@@ -1,0 +1,17 @@
+
+# -*- shell-script -*-
+
+package=(
+    name=libsodium
+    version=1.0.13
+    origin=https://github.com/jedisct1/libsodium/releases/download/${_.version}
+    files=(
+        libsodium-${_.version}.tar.gz
+    )
+)
+
+configure=(
+    arguments=(
+        "ACCEPT_INFERIOR_RM_PROGRAM=yes"
+    )
+)
