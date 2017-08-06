@@ -1,0 +1,14 @@
+
+# -*- shell-script -*-
+
+package=(
+    name=libgit2
+    version=0.26.0
+    origin=https://github.com/libgit2/libgit2/archive
+    files=(
+        v${_.version}.tar.gz
+    )
+    supports=(
+        cmake=1
+    )
+)
