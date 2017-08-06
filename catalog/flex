@@ -22,4 +22,7 @@ configure=(
         --with-pic
         --with-libiconv-prefix=/package/libiconv
     )
+    arguments=(
+        "ACCEPT_INFERIOR_RM_PROGRAM=yes"
+    )
 )
