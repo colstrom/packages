@@ -9,3 +9,9 @@ package=(
         freetds-${_.version}.tar.bz2
     )
 )
+
+configure=(
+    arguments=(
+        "ACCEPT_INFERIOR_RM_PROGRAM=yes"
+    )
+)
