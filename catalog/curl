@@ -57,4 +57,7 @@ configure=(
         --without-winssl
         --without-zsh-functions-dir
     )
+    arguments=(
+        "ACCEPT_INFERIOR_RM_PROGRAM=yes"
+    )
 )
