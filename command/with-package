@@ -22,6 +22,9 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 # THE SOFTWARE.
 
+export PATH=$(getconf PATH)
+
+PROGRAM=${0}
 PROGRAM_NAME=${0##*/}
 
 ##########
@@ -51,7 +54,7 @@ while getopts -a "${PROGRAM_NAME}" '[-1c]
 do
     case ${OPTION} in
         d) options.dump=1    ;;
-	      v) options.verbose=1 ;;
+        v) options.verbose=1 ;;
     esac
 done
 
@@ -178,7 +181,7 @@ function patches
     set ${GLOBAL_OPTIONS}
 
     if [[ -d ${IN}/patches/${package.name}-${package.version} ]]
-    then	
+    then
 	      ${FIND} ${IN}/patches/${package.name}-${package.version} -type f -name "*.patch" \
 	          | ${SED} -e "s#^${IN}/patches/${package.name}-${package.version}/##" \
 	          | ${SORT} -n
@@ -283,7 +286,7 @@ function needs
     do
 	      if [[ -f ${CATALOG}/${need} ]]
 	      then
-	          with-package ${CATALOG}/${need} needs
+	          ${PROGRAM} ${CATALOG}/${need} needs
         fi
 	      print -r -- "${need} ${package.name}"
     done
@@ -416,6 +419,8 @@ esac
 
 if (( system.is.SunOS ))
 then
+    INSTALL='/usr/sbin/install'
+
     : ${system.optisa:=$(${OPTISA} $(${ISALIST}))}
 
     if (( ! system.bits ))
@@ -434,6 +439,11 @@ fi
 #########################
 # Package Specification #
 #########################
+
+for object in package build configure make cmake ninja
+do
+    [[ -v ${object} ]] || typeset -C ${object}
+done
 
 if [[ ${1} =~ / ]]
 then
