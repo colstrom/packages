@@ -18,6 +18,7 @@ configure=(
         --with-pic
     )
     arguments=(
+        "ACCEPT_INFERIOR_RM_PROGRAM=yes"
         "LIBXML_CFLAGS=-I/package/libxml2/include/libxml2"
         "LIBXML_LIBS=-L/package/libxml2/lib -lxml2"
     )
