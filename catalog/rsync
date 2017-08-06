@@ -4,7 +4,7 @@
 package=(
     name=rsync
     version=3.1.2
-    origin=https://download.samba.org/pub/rsync
+    origin=https://www.samba.org/ftp/rsync
     files=(
         rsync-${_.version}.tar.gz
     )
