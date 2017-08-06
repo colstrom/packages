@@ -13,3 +13,9 @@ package=(
 build=(
     dir=sqlite-autoconf-3190300
 )
+
+configure=(
+    arguments=(
+        "ACCEPT_INFERIOR_RM_PROGRAM=yes"
+    )
+)
