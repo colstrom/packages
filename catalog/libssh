@@ -1,0 +1,14 @@
+
+# -*- shell-script -*-
+
+package=(
+    name=libssh
+    version=0.7.5
+    origin=https://red.libssh.org/attachments/download/218
+    files=(
+        libssh-${_.version}.tar.xz
+    )
+    supports=(
+        cmake=1
+    )
+)
