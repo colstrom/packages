@@ -32,6 +32,7 @@ build=(
 
 configure=(
     arguments=(
+        "ACCEPT_INFERIOR_RM_PROGRAM=yes"
         "LIBSPATIALITE_CFLAGS=-I/package/libspatialite/include"
         "LIBSPATIALITE_LIBS=-L/package/libspatialite/lib -lspatialite"
         "LIBFREEXL_CFLAGS=-I/package/freexl/include"
