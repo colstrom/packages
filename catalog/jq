@@ -23,4 +23,7 @@ configure=(
     options=(
         --enable-pthread-tls
     )
+    arguments=(
+        "ACCEPT_INFERIOR_RM_PROGRAM=yes"
+    )
 )
