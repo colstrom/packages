@@ -9,3 +9,9 @@ package=(
         file-${_.version}.tar.gz
     )
 )
+
+configure=(
+    arguments=(
+        "ACCEPT_INFERIOR_RM_PROGRAM=yes"
+    )
+)
