@@ -22,4 +22,7 @@ configure=(
     options=(
         --with-pnglibdir=/package/libpng
     )
+    arguments=(
+        "ACCEPT_INFERIOR_RM_PROGRAM=yes"
+    )
 )
