@@ -23,4 +23,7 @@ configure=(
         --with-libtiff=/package/tiff
         --with-proj=/package/proj
     )
+    arguments=(
+        "ACCEPT_INFERIOR_RM_PROGRAM=yes"
+    )
 )
