@@ -25,6 +25,9 @@ configure=(
         --with-libsigsegv-prefix=/package/libsigsegv
         --with-libpth-prefix=/package/pth
     )
+    arguments=(
+        "ACCEPT_INFERIOR_RM_PROGRAM=yes"
+    )
 )
 
 build=(
