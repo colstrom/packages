@@ -35,6 +35,7 @@ build=(
 
 configure=(
     arguments=(
+        "ACCEPT_INFERIOR_RM_PROGRAM=yes"
         "LIBXML2_CFLAGS=-I/package/libxml2/include/libxml2"
         "LIBXML2_LIBS=-L/package/libxml2/lib"
         "LIBS=-lxml2"
