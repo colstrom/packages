@@ -15,3 +15,9 @@ build=(
         -D_XPG6
     )
 )
+
+configure=(
+    arguments=(
+        "ACCEPT_INFERIOR_RM_PROGRAM=yes"
+    )
+)
