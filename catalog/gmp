@@ -17,4 +17,7 @@ configure=(
         --enable-static
         --with-pic
     )
+    arguments=(
+        "ACCEPT_INFERIOR_RM_PROGRAM=yes"
+    )
 )
