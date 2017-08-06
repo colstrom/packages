@@ -24,6 +24,9 @@ configure=(
         --with-libiconv-prefix=/package/libiconv
         --with-libpth-prefix=/package/libpth
     )
+    arguments=(
+        "ACCEPT_INFERIOR_RM_PROGRAM=yes"
+    )
 )
 
 [[ ${USER} == root ]] && export FORCE_UNSAFE_CONFIGURE=1
