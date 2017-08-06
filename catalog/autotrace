@@ -1,0 +1,11 @@
+
+# -*- shell-script -*-
+
+package=(
+    name=autotrace
+    version=0.31.1
+    origin=https://sourceforge.net/projects/autotrace/files/AutoTrace/${_.version}
+    files=(
+        autotrace-${_.version}.tar.gz
+    )
+)
