@@ -1,0 +1,18 @@
+
+# -*- shell-script -*-
+
+package=(
+    name=clucene
+    version=2.3.3.4
+    origin=http://downloads.sourceforge.net/clucene
+    files=(
+        clucene-core-${_.version}.tar.gz
+    )
+    supports=(
+        cmake=1
+    )
+)
+
+build=(
+    dir=clucene-core-${package.version}
+)
