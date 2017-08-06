@@ -1,0 +1,29 @@
+
+# -*- shell-script -*-
+
+package=(
+    name=lz4
+    version=1.7.5
+    origin=https://github.com/lz4/lz4/archive
+    files=(
+        v${_.version}.tar.gz
+    )
+    requires=(
+        make_arguments=1
+    )
+)
+
+make=(
+    arguments=(
+        "CC=${CC}"
+    )
+)
+
+function install
+{
+    build
+    cd ${WORKDIR}
+
+    ${INSTALL} -d ${PACKAGE}/bin
+    ${INSTALL} -c ${PACKAGE}/bin -m 755 lz4
+}
