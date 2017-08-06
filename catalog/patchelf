@@ -1,0 +1,17 @@
+
+# -*- shell-script -*-
+
+package=(
+    name=patchelf
+    version=0.9
+    origin=https://nixos.org/releases/patchelf/patchelf-${_.version}
+    files=(
+        patchelf-${_.version}.tar.bz2
+    )
+)
+
+configure=(
+    arguments=(
+        "ACCEPT_INFERIOR_RM_PROGRAM=yes"
+    )
+)
