@@ -20,3 +20,9 @@ build=(
         -I/package/gmp/include
     )
 )
+
+configure=(
+    arguments=(
+        "ACCEPT_INFERIOR_RM_PROGRAM=yes"
+    )
+)
