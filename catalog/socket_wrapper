@@ -1,0 +1,14 @@
+
+# -*- shell-script -*-
+
+package=(
+    name=socket_wrapper
+    version=1.1.7
+    origin=https://www.samba.org/ftp/cwrap
+    files=(
+        socket_wrapper-${_.version}.tar.gz
+    )
+    supports=(
+        cmake=1
+    )
+)
