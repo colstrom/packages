@@ -1,0 +1,26 @@
+
+# -*- shell-script -*-
+
+package=(
+    name=libpcap
+    version=1.8.1
+    origin=https://github.com/the-tcpdump-group/libpcap/archive
+    files=(
+        libpcap-${_.version}.tar.gz
+    )
+    needs=(
+        packages=(
+            byacc
+        )
+    )
+)
+
+build=(
+    dir=libpcap-libpcap-${package.version}
+)
+
+configure=(
+    arguments=(
+        "YACC=/package/byacc/bin/yacc"
+    )
+)
