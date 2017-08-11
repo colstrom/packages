@@ -1,0 +1,11 @@
+
+# -*- shell-script -*-
+
+package=(
+    name=cproto
+    version=4.7m
+    origin=ftp://invisible-island.net/cproto
+    files=(
+        cproto-${_.version}.tar.gz
+    )
+)
