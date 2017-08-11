@@ -1,0 +1,20 @@
+
+# -*- shell-script -*-
+
+package=(
+    name=redis
+    version=4.0.1
+    origin=http://download.redis.io/releases
+    files=(
+        redis-${_.version}.tar.gz
+    )
+    requires=(
+        make_arguments=1
+    )
+)
+
+make=(
+    arguments=(
+        "CC=${CC}"
+    )
+)
