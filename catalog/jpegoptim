@@ -1,0 +1,26 @@
+
+# -*- shell-script -*-
+
+package=(
+    name=jpegoptim
+    version=1.4.4
+    origin=https://github.com/tjko/jpegoptim/archive
+    files=(
+        RELEASE.${_.version}.tar.gz
+    )
+    needs=(
+        packages=(
+            jpeg
+        )
+    )
+)
+
+build=(
+    dir=jpegoptim-RELEASE.${package.version}
+)
+
+configure=(
+    options=(
+        --with-libjpeg=/package/jpeg
+    )
+)
