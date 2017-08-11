@@ -1,0 +1,12 @@
+
+# -*- shell-script -*-
+
+package=(
+    name=sdate
+    version=0.3
+    origin=http://www.df7cb.de/projects/sdate/packages
+    files=(
+        sdate_${_.version}.tar.gz
+    )
+)
+
