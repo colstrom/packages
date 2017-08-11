@@ -1,0 +1,20 @@
+
+# -*- shell-script -*-
+
+package=(
+    name=fzy
+    version=0.9
+    origin=https://github.com/jhawthorn/fzy/archive
+    files=(
+        ${_.version}.tar.gz
+    )
+    requires=(
+        make_arguments=1
+    )
+)
+
+make=(
+    arguments=(
+        "CC=${CC}"
+    )
+)
