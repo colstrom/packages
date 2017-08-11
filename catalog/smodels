@@ -1,0 +1,48 @@
+
+# -*- shell-script -*-
+
+package=(
+    name=smodels
+    version=2.34
+    origin=http://www.tcs.hut.fi/Software/smodels/src
+    files=(
+        smodels-${_.version}.tar.gz
+    )
+    needs=(
+        packages=(
+            libtool
+        )
+    )
+)
+
+function build
+{
+    set ${GLOBAL_OPTIONS}
+    
+    [[ -d ${WORKDIR} ]] || unpack
+
+    cd ${WORKDIR}
+
+    env PATH=/package/libtool/bin:${PATH} ${MAKE} -C ${WORKDIR} "${make.options[@]}" "${make.arguments[@]}"
+    env PATH=/package/libtool/bin:${PATH} ${MAKE} -C ${WORKDIR} "${make.options[@]}" "${make.arguments[@]}" lib
+}
+
+function install
+{
+    set ${GLOBAL_OPTIONS}
+
+    build
+
+    cd ${WORKDIR}
+
+    ${INSTALL} -d ${PACKAGE}/bin
+    ${INSTALL} -c ${PACKAGE} -m 0755 smodels
+    ${INSTALL} -d ${PACKAGE}/lib
+    
+    for file in .libs/libsmodels.{a,so*}
+    do if [[ -L ${file} ]]
+       then ${LN_S} $(${READLINK} ${file}) ${PACKAGE}/lib/${file##*/}
+       else ${INSTALL} -c ${PACKAGE}/lib -m 0644 ${file}
+       fi
+    done
+}
