@@ -1,0 +1,11 @@
+
+# -*- shell-script -*-
+
+package=(
+    name=jemalloc
+    version=5.0.1
+    origin=https://github.com/jemalloc/jemalloc/releases/download/${_.version}
+    files=(
+        jemalloc-${_.version}.tar.bz2
+    )
+)
