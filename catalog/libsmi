@@ -1,0 +1,17 @@
+
+# -*- shell-script -*-
+
+package=(
+    name=libsmi
+    version=0.5.0
+    origin=https://www.ibr.cs.tu-bs.de/projects/libsmi/download
+    files=(
+        libsmi-${_.version}.tar.gz
+    )
+)
+
+configure=(
+    arguments=(
+        "ACCEPT_INFERIOR_RM_PROGRAM=yes"
+    )
+)
