@@ -1,0 +1,28 @@
+
+# -*- shell-script -*-
+
+package=(
+    name=confuse
+    version=3.0
+    origin=https://github.com/martinh/libconfuse/releases/download/v${_.version}
+    files=(
+        confuse-${_.version}.tar.xz
+    )
+    needs=(
+        packages=(
+            libiconv
+        )
+    )
+)
+
+configure=(
+    arguments=(
+        "ACCEPT_INFERIOR_RM_PROGRAM=yes"
+    )
+    options=(
+        --enable-shared
+        --enable-static
+        --with-pic
+        --with-libiconv-prefix=/package/libiconv
+    )
+)
