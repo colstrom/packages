@@ -1,0 +1,23 @@
+
+# -*- shell-script -*-
+
+package=(
+    name=czmq
+    version=3.0.2
+    origin=https://github.com/zeromq/czmq/releases/download/v${_.version}
+    files=(
+        czmq-${_.version}.tar.gz
+    )
+    needs=(
+        packages=(
+            zeromq
+        )
+    )
+)
+
+configure=(
+    arguments=(
+        "zmq_CFLAGS=-I/package/zeromq/include"
+        "zmq_LIBS=-L/package/zeromq/lib -lzmq"
+    )
+)
