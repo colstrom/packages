@@ -1,0 +1,17 @@
+
+# -*- shell-script -*-
+
+package=(
+    name=lcms2
+    version=2.8
+    origin=https://sourceforge.net/projects/lcms/files/lcms/${_.version}
+    files=(
+        lcms2-${_.version}.tar.gz
+    )
+)
+
+configure=(
+    arguments=(
+        "ACCEPT_INFERIOR_RM_PROGRAM=yes"
+    )
+)
