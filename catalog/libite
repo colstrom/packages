@@ -1,0 +1,23 @@
+
+# -*- shell-script -*-
+
+package=(
+    name=libite
+    version=1.9.2
+    origin=https://github.com/troglobit/libite/releases/download/v${_.version}
+    files=(
+        libite-${_.version}.tar.xz
+    )
+)
+
+build=(
+    CPPFLAGS=(
+        "-include sys/sockio.h"
+    )
+)
+
+configure=(
+    arguments=(
+        "ACCEPT_INFERIOR_RM_PROGRAM=yes"
+    )
+)
