@@ -1,0 +1,14 @@
+
+# -*- shell-script -*-
+
+package=(
+    name=jasper
+    version=2.0.12
+    origin=https://www.ece.uvic.ca/~frodo/jasper/software
+    files=(
+        jasper-${_.version}.tar.gz
+    )
+    supports=(
+        cmake=1
+    )
+)
