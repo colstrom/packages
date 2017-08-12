@@ -1,0 +1,57 @@
+
+# -*- shell-script -*-
+
+package=(
+    name=illumos-fusefs
+    version=1.3.1
+    origin=https://github.com/jurikm/illumos-fusefs/archive
+    files=(
+        Version-${_.version}.tar.gz
+    )
+    needs=(
+        host=(
+            packages=(
+                pkg:/developer/build/onbld
+                pkg:/developer/sunstudio12.1
+            )
+        )
+    )
+)
+
+build=(
+    dir=illumos-fusefs-Version-${package.version}/kernel
+)
+
+function build
+{
+    set ${GLOBAL_OPTIONS}
+    
+    [[ -d ${WORKDIR} ]] || unpack
+
+    cd ${WORKDIR}
+
+    env PATH=/opt/onbld/bin:/opt/onbld/bin/i386:/opt/sunstudio12.1/bin:$(getconf PATH) /opt/onbld/bin/i386/make
+}
+
+function install
+{
+    build
+
+    cd ${WORKDIR}
+
+    ${INSTALL} -d ${PACKAGE}/include
+    ${INSTALL} -c ${PACKAGE}/include -m 0644 fuse.h
+    
+    ${INSTALL} -d ${PACKAGE}/kernel/drv
+    ${INSTALL} -c ${PACKAGE}/kernel/drv -m 0644 fuse.conf
+    
+    if (( system.bits == 64 ))
+    then ${INSTALL} -c ${PACKAGE}/kernel/drv -m 0644 amd64/fuse
+    else ${INSTALL} -c ${PACKAGE}/kernel/drv -m 0644 i386/fuse
+    fi
+}
+
+if ! (( system.is.SunOS ))
+then print -r -u 2 -- "${package.name} requires a SunOS derivative, such as illumos."
+     exit ${ENOTSUP:-'48'}
+fi
