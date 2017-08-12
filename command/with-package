@@ -217,7 +217,7 @@ function configure
     cd ${WORKDIR}
 
     if [[ -x configure ]]
-    then ./configure "${configure.options[@]}" "${configure.arguments[@]}"
+    then env "${configure.environment[@]}" ./configure "${configure.options[@]}" "${configure.arguments[@]}"
     else if [[ -x autogen.sh ]]
          then ./autogen.sh
               ${.sh.fun}
@@ -242,7 +242,7 @@ function build
 {
     set ${GLOBAL_OPTIONS}
 
-    ${MAKE} -C ${WORKDIR} "${make.options[@]}" "${make.arguments[@]}"
+    env "${make.environment[@]}" ${MAKE} -C ${WORKDIR} "${make.options[@]}" "${make.arguments[@]}"
 }
 
 function rebuild
@@ -267,7 +267,7 @@ function install
 
     build
 
-    ${MAKE} -C ${WORKDIR} "${make.options[@]}" install "${make.arguments[@]}"
+    env "${make.environment[@]}" ${MAKE} -C ${WORKDIR} "${make.options[@]}" install "${make.arguments[@]}"
 }
 
 function reinstall
@@ -462,7 +462,7 @@ done
 
 for object in configure make cmake ninja
 do [[ -v ${object} ]] || typeset -C ${object}
-   for property in options arguments
+   for property in environment options arguments
    do [[ -v ${object}.${property} ]] || typeset -a ${object}.${property}
    done
 done
@@ -565,8 +565,8 @@ then
         cd ${WORKDIR}/build
 
         if (( system.has.ninja ))
-        then ${CMAKE} -G'Ninja'          "${cmake.options[@]}" "${cmake.arguments[@]}" ${WORKDIR}
-        else ${CMAKE} -G'Unix Makefiles' "${cmake.options[@]}" "${cmake.arguments[@]}" ${WORKDIR}
+        then env "${cmake.environment[@]}" ${CMAKE} -G'Ninja'          "${cmake.options[@]}" "${cmake.arguments[@]}" ${WORKDIR}
+        else env "${cmake.environment[@]}" ${CMAKE} -G'Unix Makefiles' "${cmake.options[@]}" "${cmake.arguments[@]}" ${WORKDIR}
         fi
     }
 
@@ -577,8 +577,8 @@ then
         [[ -d ${WORKDIR}/build ]] || prepare
 
         if (( system.has.ninja ))
-        then ${NINJA} -C ${WORKDIR}/build "${ninja.options[@]}" "${ninja.arguments[@]}"
-        else ${MAKE}  -C ${WORKDIR}/build "${make.options[@]}"  "${make.arguments[@]}"
+        then env "${ninja.environment[@]}" ${NINJA} -C ${WORKDIR}/build "${ninja.options[@]}" "${ninja.arguments[@]}"
+        else env "${make.environment[@]}"  ${MAKE}  -C ${WORKDIR}/build "${make.options[@]}"  "${make.arguments[@]}"
         fi
     }
 
@@ -589,8 +589,8 @@ then
         build
 
         if (( system.has.ninja ))
-        then ${NINJA} -C ${WORKDIR}/build "${ninja.options[@]}" "${ninja.arguments[@]}" install
-        else ${MAKE}  -C ${WORKDIR}/build "${make.options[@]}"  "${make.arguments[@]}"  install
+        then env "${ninja.environment[@]}" ${NINJA} -C ${WORKDIR}/build "${ninja.options[@]}" "${ninja.arguments[@]}" install
+        else env "${make.environment[@]}"  ${MAKE}  -C ${WORKDIR}/build "${make.options[@]}"  "${make.arguments[@]}"  install
         fi
     }
 fi
