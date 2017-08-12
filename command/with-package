@@ -35,6 +35,14 @@ ENOENT=2
 EINVAL=22
 ENOTSUP=48
 
+##################
+# Features Flags #
+##################
+
+feature=(
+    automagic=0
+)
+
 ###########
 # Options #
 ###########
@@ -44,18 +52,20 @@ options=(
     verbose=0
 )
 
-while getopts -a "${PROGRAM_NAME}" '[-1c]
+while getopts -a "${PROGRAM_NAME}" '[-1c+]
+[X:experimental]:[FEATURE?Enable experimental FEATURE.]
 [v:verbose?Enable verbose output.]
 [d:dump?Dump configuration and exit.]
 
 <package> <action>
 
 ' OPTION
-do
-    case ${OPTION} in
-        d) options.dump=1    ;;
-        v) options.verbose=1 ;;
-    esac
+do case ${OPTION} in
+       d)  options.dump=1     ;;
+       v)  options.verbose=1  ;;
+       X)  nameref flag=feature.${OPTARG}; flag=0  ;;
+       +X) nameref flag=feature.${OPTARG}; flag=1  ;;
+   esac
 done
 
 GLOBAL_OPTIONS='-o errexit -o nounset'
@@ -70,11 +80,8 @@ shift $(( OPTIND - 1 ))
 #################
 
 if (( ${#} < 2 ))
-then
-    ${0} -?
-    exit ${EINVAL}
+then exec ${0} -?
 fi
-
 
 ####################
 # Base Environment #
@@ -91,6 +98,20 @@ fi
 # Functions #
 #############
 
+function fail
+{
+    case ${#} in
+        0) ${.sh.fun} 99   ''  ;;
+        1) ${.sh.fun} ${1} ''  ;;
+        *)
+            status=${1}
+            shift 1
+            print -r -u 2 -- "${PROGRAM_NAME}: ${*}"
+            exit ${status}
+            ;;
+    esac
+}
+
 function workdir
 {
     print -r "${WORKDIR}"
@@ -99,6 +120,7 @@ function workdir
 function clean
 {
     set ${GLOBAL_OPTIONS}
+
     ${RM_RF} ${WORK_PACKAGE}
 }
 
@@ -113,25 +135,19 @@ function repack
     suffix=${file##*.}
 
     case ${suffix} in
-	      gz|tgz)           ${GUNZIP}      -f ${file}  ;;
-	      bz|bz2|tbz|tbz2)  ${BUNZIP2}     -f ${file}  ;;
-	      xz|txz)           ${XZ}       -d -f ${file}  ;;
-	      lz4|tlz4)         ${LZ4} --rm -d -f ${file}  ;;
-	      tar)              :                          ;;
-	      *)
-	          print -r -u 2 "ENOTSUP: ${file}: ${suffix} is not supported."
-	          exit ${ENOTSUP}
-	          ;;
+        gz|tgz)           ${GUNZIP}      -f ${file}  ;;
+        bz|bz2|tbz|tbz2)  ${BUNZIP2}     -f ${file}  ;;
+        xz|txz)           ${XZ}       -d -f ${file}  ;;
+        lz4|tlz4)         ${LZ4} --rm -d -f ${file}  ;;
+        tar)              :                          ;;
+        *)  fail ${ENOTSUP} "ENOTSUP: ${file}: ${suffix} is not supported."  ;;
     esac
 
     case ${suffix} in
-	      gz|bz|bz2|lz4|xz)       tarfile=${file%.*}      ;;
-	      tgz|tbz|tbz2|tlz4|txz)  tarfile=${file%.*}.tar  ;;
-	      tar)                    tarfile=${file}         ;;
-	      *)
-	          print -r -u 2 "ENOTSUP: ${file}: ${suffix} is not supported."
-	          exit ${ENOTSUP}
-	          ;;
+        gz|bz|bz2|lz4|xz)       tarfile=${file%.*}      ;;
+        tgz|tbz|tbz2|tlz4|txz)  tarfile=${file%.*}.tar  ;;
+        tar)                    tarfile=${file}         ;;
+        *)  fail ${ENOTSUP} "ENOTSUP: ${file}: ${suffix} is not supported."  ;;
     esac
 
     ${XZ} -f ${tarfile}
@@ -144,10 +160,8 @@ function fetch
     [[ -d ${IN_PACKAGE} ]] || ${MKDIR_P} ${IN_PACKAGE}
 
     for file in ${@:-${package.files[@]}}
-    do
-	      [[ -f ${IN_PACKAGE}/${file} ]] && continue
-
-	      ${CURL} -L -o ${IN_PACKAGE}/${file} ${package.origin}/${file}
+    do [[ -f ${IN_PACKAGE}/${file} ]] && continue
+       ${CURL} -L -o ${IN_PACKAGE}/${file} ${package.origin}/${file}
     done
 }
 
@@ -158,16 +172,12 @@ function unpack
     [[ -d ${WORK_PACKAGE} ]] || ${MKDIR_P} ${WORK_PACKAGE}
 
     for file in ${package.files[@]}
-    do
-	      [[ -f ${IN_PACKAGE}/${file} ]] || fetch ${file}
-
-	      if [[ ${file} =~ '.zip$' ]]
-	      then
-	          ${MKDIR_P} ${WORKDIR}
-	          ${UNZIP} -o -d ${WORKDIR} ${IN_PACKAGE}/${file}
-	      else
-	          ${TAR} -x -f ${IN_PACKAGE}/${file} -C ${WORK_PACKAGE}
-	      fi
+    do [[ -f ${IN_PACKAGE}/${file} ]] || fetch ${file}
+        if [[ ${file} =~ '.zip$' ]]
+        then ${MKDIR_P} ${WORKDIR}
+             ${UNZIP} -o -d ${WORKDIR} ${IN_PACKAGE}/${file}
+        else ${TAR} -x -f ${IN_PACKAGE}/${file} -C ${WORK_PACKAGE}
+        fi
     done
 }
 
@@ -181,10 +191,9 @@ function patches
     set ${GLOBAL_OPTIONS}
 
     if [[ -d ${IN}/patches/${package.name}-${package.version} ]]
-    then
-	      ${FIND} ${IN}/patches/${package.name}-${package.version} -type f -name "*.patch" \
-	          | ${SED} -e "s#^${IN}/patches/${package.name}-${package.version}/##" \
-	          | ${SORT} -n
+    then ${FIND} ${IN}/patches/${package.name}-${package.version} -type f -name "*.patch" \
+            | ${SED} -e "s#^${IN}/patches/${package.name}-${package.version}/##" \
+            | ${SORT} -n
     fi
 }
 
@@ -194,14 +203,8 @@ function patch
 
     [[ -d ${WORKDIR} ]] || unpack
 
-    cd ${WORKDIR}
-
-    for p in $(patches)
-    do
-	      patch=${IN}/patches/${package.name}-${package.version}/${p}
-	      file=$(dirname ${p})
-
-	      ${PATCH} -i ${patch} ${file}
+    for patch in $(patches)
+    do ${PATCH} -i ${IN}/patches/${package.name}-${package.version}/${patch} ${WORKDIR}/$(dirname ${patch})
     done
 }
 
@@ -214,24 +217,21 @@ function configure
     cd ${WORKDIR}
 
     if [[ -x configure ]]
-    then
-	      ./configure "${configure.options[@]}" "${configure.arguments[@]}"
-    else
-	      if [[ -x autogen.sh ]]
-	      then
-	          ./autogen.sh
-	          ${.sh.fun}
-        elif [[ -f configure.ac ]]
-        then
-            ${AUTORECONF_I}
-            ${.sh.fun}
-	      fi
+    then ./configure "${configure.options[@]}" "${configure.arguments[@]}"
+    else if [[ -x autogen.sh ]]
+         then ./autogen.sh
+              ${.sh.fun}
+         elif [[ -f configure.ac ]]
+         then ${AUTORECONF_I}
+              ${.sh.fun}
+         fi
     fi
 }
 
 function prepare
 {
     set ${GLOBAL_OPTIONS}
+
     unpack
     overlay
     patch
@@ -248,6 +248,7 @@ function build
 function rebuild
 {
     set ${GLOBAL_OPTIONS}
+
     clean
     prepare
     build
@@ -256,6 +257,7 @@ function rebuild
 function uninstall
 {
     set ${GLOBAL_OPTIONS}
+
     ${RM_RF} ${PACKAGE}
 }
 
@@ -264,8 +266,6 @@ function install
     set ${GLOBAL_OPTIONS}
 
     build
-
-    cd ${WORKDIR}
 
     ${MAKE} -C ${WORKDIR} "${make.options[@]}" install "${make.arguments[@]}"
 }
@@ -283,12 +283,10 @@ function needs
     print -r -- "${package.name} ${package.name}"
 
     for need in ${package.needs.packages[@]}
-    do
-	      if [[ -f ${CATALOG}/${need} ]]
-	      then
-	          ${PROGRAM} ${CATALOG}/${need} needs
-        fi
-	      print -r -- "${need} ${package.name}"
+    do if [[ -f ${CATALOG}/${need} ]]
+       then ${PROGRAM} ${CATALOG}/${need} needs
+       fi
+       print -r -- "${need} ${package.name}"
     done
 }
 
@@ -309,9 +307,8 @@ function show
     set ${GLOBAL_OPTIONS}
 
     for o in package build configure make cmake ninja
-    do
-        nameref object=${o}
-        print -r -- "${o}=${object}"
+    do nameref object=${o}
+       print -r -- "${o}=${object}"
     done
 }
 
@@ -349,6 +346,7 @@ function show
 : ${OPTISA:=$(     whence -p optisa                                        )}
 : ${PATCH:=$(      whence -p spatch || whence -p gpatch || whence -p patch )}
 : ${RANLIB:=$(     whence -p ranlib                                        )}
+: ${READLINK:=$(   whence -p readlink                                      )}
 : ${RM:=$(         whence -p grm    || whence -p rm                        )}
 : ${SED:=$(        whence -p gsed   || whence -p sed                       )}
 : ${SORT:=$(       whence -p gsort  || whence -p sort                      )}
@@ -367,7 +365,8 @@ function show
 : ${RM_RF:="${RM} -rf"}
 : ${UNAME_S:="${UNAME} -s"}
 
-: ${OS:=$(${UNAME_S})}
+LANG=C
+LC_ALL=C
 
 typeset -C system=(
     typeset -i bits
@@ -377,11 +376,45 @@ typeset -C system=(
     typeset -i is.{UNIX,Linux,SunOS,BSD,macOS,{Free,Open,Net}BSD}
 )
 
+: ${OS:=$(${UNAME_S})}
+case ${OS} in
+    SunOS|Darwin|*BSD)
+        system.is.UNIX=1
+        case ${OS} in
+            SunOS)
+                system.is.SunOS=1
+                ;;
+            Darwin|*BSD)
+                system.is.BSD=1
+                case ${OS} in
+                    Darwin)  system.is.macOS=1   ;;
+                    FreeBSD) system.is.FreeBSD=1 ;;
+                    OpenBSD) system.is.OpenBSD=1 ;;
+                    NetBSD)  system.is.NetBSD=1  ;;
+                esac
+                ;;
+        esac
+        ;;
+    Linux)
+        system.is.Linux=1
+        ;;
+esac
+
+(( system.is.SunOS )) && INSTALL='/usr/sbin/install'
+
+if (( system.is.SunOS ))
+then if (( ! system.bits ))
+     then case $(${OPTISA} $(${ISALIST})) in
+              amd64) system.bits=64 ;;
+              i386)  system.bits=32 ;;
+          esac
+     fi
+else (( system.bits )) || system.bits=64
+fi
+
 if [[ -x ${NPROC} ]]
-then
-    (( system.processors )) || system.processors=$(${NPROC})
-else
-    (( system.processors )) || system.processors=2
+then (( system.processors )) || system.processors=$(${NPROC})
+else (( system.processors )) || system.processors=2
 fi
 
 [[ -x ${CCACHE}  ]] && system.has.ccache=1
@@ -394,72 +427,25 @@ fi
 [[ -x ${LLD}     ]] && system.has.lld=1
 [[ -x ${NINJA}   ]] && system.has.ninja=1
 
-case ${OS} in
-    SunOS|Darwin|*BSD)
-        system.is.UNIX=1
-	      case ${OS} in
-	          SunOS)
-                system.is.SunOS=1
-                ;;
-	          Darwin|*BSD)
-                system.is.BSD=1
-		            case ${OS} in
-		                Darwin)  system.is.macOS=1   ;;
-		                FreeBSD) system.is.FreeBSD=1 ;;
-		                OpenBSD) system.is.OpenBSD=1 ;;
-		                NetBSD)  system.is.NetBSD=1  ;;
-		            esac
-		            ;;
-	      esac
-	      ;;
-    Linux)
-        system.is.Linux=1
-        ;;
-esac
-
-if (( system.is.SunOS ))
-then
-    INSTALL='/usr/sbin/install'
-
-    : ${system.optisa:=$(${OPTISA} $(${ISALIST}))}
-
-    if (( ! system.bits ))
-    then
-	      case ${system.optisa} in
-	          amd64) system.bits=64 ;;
-	          i386)  system.bits=32 ;;
-	      esac
-    fi
-else
-    (( system.bits )) || system.bits=64
-fi
-
-(( options.dump )) && exit
+(( options.dump )) && exit 0
 
 #########################
 # Package Specification #
 #########################
 
 for object in package build configure make cmake ninja
-do
-    [[ -v ${object} ]] || typeset -C ${object}
+do [[ -v ${object} ]] || typeset -C ${object}
 done
 
 if [[ ${1} =~ / ]]
-then
-    if [[ ! -f ${1} ]]
-    then
-        print -r -u 2 -- "${PROGRAM_NAME}: ${1}: No such file or directory"
-        exit ${ENOENT}
-    fi
-    . ${1}
-else
-    if [[ ! -f ${ROOT}/.package/catalog/${1} ]]
-    then
-        print -r -u 2 -- "${PROGRAM_NAME}: ${1}: No such file or directory"
-        exit ${ENOENT}
-    fi
-    . ${ROOT}/.package/catalog/${1}
+then if [[ ! -f ${1} ]]
+     then fail ${ENOENT} "${1}: No such file or directory"
+     fi
+     . ${1}
+else if [[ ! -f ${ROOT}/.package/catalog/${1} ]]
+     then fail ${ENOENT} "${1}: No such file or directory"
+     fi
+     . ${ROOT}/.package/catalog/${1}
 fi
 
 ##########################
@@ -467,29 +453,24 @@ fi
 ##########################
 
 for property in needs requires supports
-do
-    [[ -v package.${property} ]] || typeset -C package.${property}
+do [[ -v package.${property} ]] || typeset -C package.${property}
 done
 
 for property in files needs.host needs.packages
-do
-    [[ -v package.${property} ]] || typeset -a package.${property}
+do [[ -v package.${property} ]] || typeset -a package.${property}
 done
 
 for object in configure make cmake ninja
-do
-    [[ -v ${object} ]] || typeset -C ${object}
-    for property in options arguments
-    do
-	      [[ -v ${object}.${property} ]] || typeset -a ${object}.${property}
-    done
+do [[ -v ${object} ]] || typeset -C ${object}
+   for property in options arguments
+   do [[ -v ${object}.${property} ]] || typeset -a ${object}.${property}
+   done
 done
 
 [[ -v build ]] || typeset -C build
 
 for property in CFLAGS CPPFLAGS CXXFLAGS LDFLAGS LIBLDFLAGS LIBS
-do
-    [[ -v build.${property} ]] || typeset -a build.${property}
+do [[ -v build.${property} ]] || typeset -a build.${property}
 done
 
 #######################
@@ -504,10 +485,8 @@ WORK_PACKAGE=${WORK}/${package.name}-${package.version}
 
 : ${build.dir:=''}
 if [[ ${build.dir} ]]
-then
-    WORKDIR=${WORK_PACKAGE}/${build.dir}
-else
-    WORKDIR=${WORK_PACKAGE}/${package.name}-${package.version}
+then WORKDIR=${WORK_PACKAGE}/${build.dir}
+else WORKDIR=${WORK_PACKAGE}/${package.name}-${package.version}
 fi
 
 ###########################
@@ -530,24 +509,33 @@ ninja.options+=  ( -v                          )
 : ${package.supports.configure:='1'}
 if (( package.supports.configure ))
 then
-                                     configure.options+=   ( "--prefix=${PACKAGE}"               )
-    (( ${#build.CFLAGS[@]}     )) && configure.arguments+= ( "CFLAGS=${build.CFLAGS[*]}"         )
-    (( ${#build.CPPFLAGS[@]}   )) && configure.arguments+= ( "CPPFLAGS=${build.CPPFLAGS[*]}"     )
-    (( ${#build.CXXFLAGS[@]}   )) && configure.arguments+= ( "CXXFLAGS=${build.CXXFLAGS[*]}"     )
-    (( ${#build.LDFLAGS[@]}    )) && configure.arguments+= ( "LDFLAGS=${build.LDFLAGS[*]}"       )
-    (( ${#build.LIBLDFLAGS[@]} )) && configure.arguments+= ( "LIBLDFLAGS=${build.LIBLDFLAGS[*]}" )
+    configure.options+=   ( "--prefix=${PACKAGE}" )
+
+    : ${package.supports.configure_arguments:='1'}
+    if (( package.supports.configure_arguments ))
+    then
+        (( ${#build.CFLAGS[@]}     )) && configure.arguments+= ( "CFLAGS=${build.CFLAGS[*]}"         )
+        (( ${#build.CPPFLAGS[@]}   )) && configure.arguments+= ( "CPPFLAGS=${build.CPPFLAGS[*]}"     )
+        (( ${#build.CXXFLAGS[@]}   )) && configure.arguments+= ( "CXXFLAGS=${build.CXXFLAGS[*]}"     )
+        (( ${#build.LDFLAGS[@]}    )) && configure.arguments+= ( "LDFLAGS=${build.LDFLAGS[*]}"       )
+        (( ${#build.LIBLDFLAGS[@]} )) && configure.arguments+= ( "LIBLDFLAGS=${build.LIBLDFLAGS[*]}" )
+    fi
 fi
 
 : ${package.requires.make_arguments:='0'}
 if (( package.requires.make_arguments ))
 then
-                                     make.arguments+= ( "PREFIX=${PACKAGE}"                 )
-    (( ${#build.CFLAGS[@]}     )) && make.arguments+= ( "CFLAGS=${build.CFLAGS[*]}"         )
-    (( ${#build.CPPFLAGS[@]}   )) && make.arguments+= ( "CPPFLAGS=${build.CPPFLAGS[*]}"     )
-    (( ${#build.CXXFLAGS[@]}   )) && make.arguments+= ( "CXXFLAGS=${build.CXXFLAGS[*]}"     )
-    (( ${#build.LDFLAGS[@]}    )) && make.arguments+= ( "LDFLAGS=${build.LDFLAGS[*]}"       )
-    (( ${#build.LIBLDFLAGS[@]} )) && make.arguments+= ( "LIBLDFLAGS=${build.LIBLDFLAGS[*]}" )
+    make.arguments+= ( "PREFIX=${PACKAGE}" )
 
+    : ${package.supports.make_arguments:='1'}
+    if (( package.supports.make_arguments ))
+    then
+        (( ${#build.CFLAGS[@]}     )) && make.arguments+= ( "CFLAGS=${build.CFLAGS[*]}"         )
+        (( ${#build.CPPFLAGS[@]}   )) && make.arguments+= ( "CPPFLAGS=${build.CPPFLAGS[*]}"     )
+        (( ${#build.CXXFLAGS[@]}   )) && make.arguments+= ( "CXXFLAGS=${build.CXXFLAGS[*]}"     )
+        (( ${#build.LDFLAGS[@]}    )) && make.arguments+= ( "LDFLAGS=${build.LDFLAGS[*]}"       )
+        (( ${#build.LIBLDFLAGS[@]} )) && make.arguments+= ( "LIBLDFLAGS=${build.LIBLDFLAGS[*]}" )
+    fi
 fi
 
 if (( system.has.ccache ))
@@ -577,10 +565,8 @@ then
         cd ${WORKDIR}/build
 
         if (( system.has.ninja ))
-        then
-	    ${CMAKE} -G'Ninja' "${cmake.options[@]}" "${cmake.arguments[@]}" ${WORKDIR}
-        else
-	    ${CMAKE} -G'Unix Makefiles' "${cmake.options[@]}" "${cmake.arguments[@]}" ${WORKDIR}
+        then ${CMAKE} -G'Ninja'          "${cmake.options[@]}" "${cmake.arguments[@]}" ${WORKDIR}
+        else ${CMAKE} -G'Unix Makefiles' "${cmake.options[@]}" "${cmake.arguments[@]}" ${WORKDIR}
         fi
     }
 
@@ -591,10 +577,8 @@ then
         [[ -d ${WORKDIR}/build ]] || prepare
 
         if (( system.has.ninja ))
-        then
-	    ${NINJA} -C ${WORKDIR}/build "${ninja.options[@]}" "${ninja.arguments[@]}"
-        else
-	    ${MAKE}  -C ${WORKDIR}/build "${make.options[@]}"  "${make.arguments[@]}"
+        then ${NINJA} -C ${WORKDIR}/build "${ninja.options[@]}" "${ninja.arguments[@]}"
+        else ${MAKE}  -C ${WORKDIR}/build "${make.options[@]}"  "${make.arguments[@]}"
         fi
     }
 
@@ -605,13 +589,24 @@ then
         build
 
         if (( system.has.ninja ))
-        then
-	    ${NINJA} -C ${WORKDIR}/build "${ninja.options[@]}" "${ninja.arguments[@]}" install
-        else
-	    ${MAKE}  -C ${WORKDIR}/build "${make.options[@]}"  "${make.arguments[@]}"  install
+        then ${NINJA} -C ${WORKDIR}/build "${ninja.options[@]}" "${ninja.arguments[@]}" install
+        else ${MAKE}  -C ${WORKDIR}/build "${make.options[@]}"  "${make.arguments[@]}"  install
         fi
     }
 fi
+
+if (( feature.automagic ))
+then for need in ${package.needs.packages[@]}
+     do
+         [[ -d ${ROOT}/package/${need}/bin     ]] && PATH=${ROOT}/package/${need}/bin:${PATH}
+         [[ -d ${ROOT}/package/${need}/include ]] && C_INCLUDE_PATH=${ROOT}/package/${need}/include:${C_INCLUDE_PATH:=''}
+         [[ -d ${ROOT}/package/${need}/lib     ]] && LIBRARY_PATH=${ROOT}/package/${need}/lib:${LIBRARY_PATH:=''}
+     done
+fi
+
+export PATH
+export C_INCLUDE_PATH
+export LIBRARY_PATH
 
 #####################
 # Process Arguments #
@@ -620,6 +615,5 @@ fi
 shift 1
 
 for argv
-do
-    eval "${argv}"
+do eval "${argv}"
 done
