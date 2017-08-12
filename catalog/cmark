@@ -1,0 +1,19 @@
+
+# -*- shell-script -*-
+
+package=(
+    name=cmark
+    version=0.28.0
+    origin=https://github.com/commonmark/cmark/archive
+    files=(
+        ${_.version}.tar.gz
+    )
+    needs=(
+        packages=(
+            cmake
+        )
+    )
+    supports=(
+        cmake=1
+    )
+)
