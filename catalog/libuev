@@ -1,0 +1,23 @@
+
+# -*- shell-script -*-
+
+package=(
+    name=libuev
+    version=1.5.2
+    origin=https://github.com/troglobit/libuev/releases/download/v${_.version}
+    files=(
+        libuev-${_.version}.tar.xz
+    )
+)
+
+build=(
+    LDFLAGS=(
+        -lsocket
+    )
+)
+
+configure=(
+    options=(
+        "ACCEPT_INFERIOR_RM_PROGRAM=yes"
+    )
+)
