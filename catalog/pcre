@@ -1,0 +1,17 @@
+
+# -*- shell-script -*-
+
+package=(
+    name=pcre
+    version=8.41
+    origin=https://sourceforge.net/projects/pcre/files/pcre/${_.version}
+    files=(
+        pcre-${_.version}.tar.bz2
+    )
+)
+
+configure=(
+    arguments=(
+        "ACCEPT_INFERIOR_RM_PROGRAM=yes"
+    )
+)
