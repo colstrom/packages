@@ -1,0 +1,17 @@
+
+# -*- shell-script -*-
+
+package=(
+    name=bstring
+    version=1.0.0
+    origin=https://github.com/msteinert/bstring/releases/download/v${_.version}
+    files=(
+        bstring-${_.version}.tar.gz
+    )
+)
+
+configure=(
+    arguments=(
+        "ACCEPT_INFERIOR_RM_PROGRAM=yes"
+    )
+)
