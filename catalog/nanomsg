@@ -8,10 +8,8 @@ package=(
     files=(
         ${_.version}.tar.gz
     )
-    package=(
-        supports=(
-            cmake=1
-        )
+    supports=(
+        cmake=1
     )
 )
 
