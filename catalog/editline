@@ -1,0 +1,17 @@
+
+# -*- shell-script -*-
+
+package=(
+    name=editline
+    version=1.15.2
+    origin=https://github.com/troglobit/editline/releases/download/${_.version}
+    files=(
+        editline-${_.version}.tar.xz
+    )
+)
+
+configure=(
+    arguments=(
+        "ACCEPT_INFERIOR_RM_PROGRAM=yes"
+    )
+)
